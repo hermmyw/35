@@ -1,0 +1,586 @@
+-------------------------------------------------------------------------------
+*****Part 0******
+$ locale
+	The output shows LC_CTYPE="en_US.UTF-8".
+$ export LC_ALL='C'
+$ locale
+	The output shows LC_CTYPE="C".
+
+$ sort -d /usr/share/dict/words > ./words 
+	Sort the word file and put the output into a local file named words.
+
+$ wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/assign2.html
+	Export the webpage.
+$ ls
+	assign2.html is found.
+
+-------------------------------------------------------------------------------
+*****Part 1******
+Execute the following commands and send the outputs into six text files:
+	$ cat assign2.html | tr -c 'A-Za-z' '[\n*]'
+		Replace non-letter characters with new lines.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]'
+		Replace non-letter characters with new lines and replace a sequence 
+		of repeated characters (in this case, new lines) with a single 
+		occurence.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort
+		Sort the previous command's output.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u
+		Remove any duplicates from the previous command's output.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words
+		Compare the previous command's output with the list of English words.
+		Column 1 contains lines unique to assign2.html, column 2 contains 
+		lines unique to words, column 3 contains lines common to both files. 
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words
+		Output the words that are unique to assign2.html and not in words.
+
+-------------------------------------------------------------------------------
+*****Part 2******
+$ wget http://mauimapp.com/moolelo/hwnwdseng.htm
+	Obtain a copy of the web page.
+
+Inside buildwords:
+tr [:upper:] [:lower:] |
+	Translate all upper case letters to lower case letters.
+tr [\`] \'  |
+	Translate all grave accents to apostrophes.
+sed 's/?//g' |
+	Remove questions marks.
+sed 's/^ *//g' |
+	Remove leading whitespaces in each line.
+sed -n '/<tr>/ {s/.*//; N; N; s/\n//g; p;}' |
+	Delete newlines after every <tr>
+sed 's/<td>.*<td>//' |
+	English words are between <td> and <td>, remove them.
+sed 's/<[^>]*.//g' |
+	Delete html brackets.
+grep ^[pk\'mnwlhaeiou] |
+	Pick words that start with Hawaiian letters.
+tr , '\n' |
+	Entries with commas contain multiple words.
+tr - '\n' |
+	Entries with hyphens contain multiple words.
+sed 's/ /\n/g' |
+	Entries with spaces contain multiple words.
+sed "/[^pk\'mnwlhaeiou]/d" |
+	Remove improperly formatted hawaiian words
+sed '/^\s*$/d' |
+	Remove extra empty lines
+sort -u
+	Sort the words and remove duplicates.
+
+$ cat hwnwdseng.htm | ./buildwords > hwords
+	Write the Hawaiian words into hwords.
+
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort 
+-u | comm -23 - words > me
+	Running English spelling checker on assign2.html.
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort 
+-u | comm -23 - hwords > mh1
+	Running Hawaiian spelling checker on assign2.html, look at all words.
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+ sort -u | comm -23 - hwords > mh2
+	Running Hawaiian spelling checker on assign2.html, and only look at the 
+	valid Hawaiian words.
+$ cat hwords | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort -u | 
+comm -23 - hwords > hh1
+	Since tr -cs command replaces all apostrophes, the spelling check 
+	generate 45 mispelled words to hh1.
+$ cat hwords | tr [:upper:] [:lower:] | sort -u | comm -23 - hwords > hh2
+	Running Hawaiian spelling checker on hwords. hh2 is empty because hwords 
+	is the dictionary itself.
+$ diff me mh > m.diff
+	Find the difference between misspelled words in English and misspelled 
+	words in Hawaiian.
+
+By examining me, mh1, and mh2:
+	me: 38 misspelled in assign2 as English
+	mh1: 405 misspelled in assign2 as Hawaiian if improperly formatted English words
+	are considered misspelled Hawaiian words.
+	mh2: 196 misspelled in assign2 as Hawaiian if we look at words with only Hawaiian
+	letters.
+$ comm -12 me hwords
+	Misspelled as English but not as Hawaiian: wiki, lau, halau.
+$ comm -12 mh1 words
+	Misspelled as Hawaiian but not as English (370):
+		a
+		able
+		about
+		above
+		abovementioned
+		accent
+		address
+		after
+		afterwards
+		against
+		all
+		also
+		an
+		and
+		any
+		apostrophe
+		are
+		argument
+		arguments
+		as
+		ascii
+		assign
+		assignment
+		assume
+		assumption
+		attempt
+		automate
+		awk
+		b
+		bar
+		be
+		before
+		being
+		body
+		br
+		briefly
+		bug
+		bugs
+		but
+		by
+		c
+		can
+		capitalized
+		carriage
+		case
+		cased
+		cases
+		cat
+		change
+		chap
+		characters
+		check
+		checked
+		checker
+		checkers
+		checking
+		checks
+		columns
+		com
+		comm
+		command
+		commands
+		commas
+		contain
+		containing
+		contains
+		content
+		contents
+		convenience
+		copy
+		copying
+		copyright
+		count
+		create
+		crude
+		cs
+		d
+		describe
+		described
+		detail
+		dict
+		dictionary
+		did
+		differs
+		directories
+		directory
+		disk
+		do
+		doesn
+		don
+		down
+		dtd
+		duplicate
+		duplicates
+		each
+		en
+		english
+		entries
+		equiv
+		equivalent
+		equivalents
+		error
+		examine
+		example
+		examples
+		exp
+		export
+		extract
+		fetch
+		file
+		files
+		find
+		finds
+		first
+		fix
+		following
+		foo
+		for
+		formatted
+		from
+		generally
+		give
+		given
+		gnu
+		grave
+		gt
+		h
+		hand
+		handle
+		happened
+		hard
+		has
+		hawaiian
+		head
+		hint
+		homework
+		hosts
+		how
+		however
+		hr
+		id
+		if
+		ignore
+		immediately
+		implementation
+		improperly
+		in
+		input
+		into
+		introductory
+		is
+		it
+		its
+		itself
+		just
+		k
+		keep
+		l
+		lab
+		laboratory
+		language
+		last
+		later
+		lc
+		leading
+		length
+		less
+		let
+		letters
+		lexicographically
+		li
+		like
+		line
+		link
+		links
+		list
+		ln
+		locale
+		log
+		lots
+		lower
+		lt
+		m
+		mail
+		many
+		may
+		mentioned
+		merely
+		meta
+		misspelled
+		modify
+		more
+		multiple
+		n
+		name
+		named
+		names
+		naming
+		need
+		no
+		non
+		not
+		note
+		notebook
+		nothing
+		number
+		o
+		obtain
+		occurrence
+		of
+		on
+		one
+		only
+		or
+		ordinary
+		org
+		orthography
+		other
+		others
+		output
+		outputs
+		p
+		page
+		particular
+		paul
+		people
+		per
+		performed
+		please
+		portable
+		position
+		pre
+		prefer
+		prepared
+		previous
+		problem
+		problems
+		project
+		public
+		pubs
+		putting
+		r
+		rather
+		re
+		read
+		readable
+		reading
+		record
+		recursively
+		regular
+		reject
+		remaining
+		removing
+		repair
+		replace
+		replaces
+		report
+		represent
+		reproduce
+		result
+		resulting
+		results
+		returns
+		right
+		rules
+		run
+		runnable
+		running
+		s
+		samp
+		save
+		script
+		scripting
+		see
+		share
+		shell
+		should
+		shown
+		silently
+		similarly
+		simple
+		since
+		single
+		so
+		software
+		some
+		sort
+		sorted
+		sorting
+		space
+		spaces
+		special
+		spell
+		spelling
+		standard
+		start
+		steve
+		strict
+		subdirectories
+		submit
+		substitutions
+		such
+		supports
+		suppose
+		sure
+		symbolic
+		system
+		systematic
+		systematically
+		t
+		tables
+		tag
+		take
+		takes
+		test
+		text
+		than
+		that
+		the
+		their
+		them
+		then
+		there
+		these
+		they
+		thing
+		this
+		title
+		to
+		tr
+		traditional
+		transcript
+		treat
+		true
+		two
+		type
+		typed
+		u
+		under
+		unique
+		upper
+		use
+		user
+		using
+		utilities
+		v
+		var
+		w
+		want
+		we
+		web
+		were
+		what
+		where
+		which
+		whose
+		why
+		with
+		word
+		words
+		work
+		working
+		worry
+		write
+		x
+		y
+		you
+		your
+		z
+		za
+
+$ comm -12 mh2 words
+	Misspelled as Hawaiian but not as English (108):
+		a
+		ail
+		ain
+		ake
+		al
+		ale
+		alen
+		all
+		amine
+		amp
+		ample
+		an
+		aph
+		awk
+		ea
+		ee
+		el
+		em
+		emp
+		en
+		ep
+		epa
+		h
+		ha
+		han
+		hap
+		hawaiian
+		he
+		hei
+		hell
+		hem
+		hen
+		hi
+		hin
+		ho
+		how
+		howe
+		ia
+		ie
+		ii
+		ile
+		imp
+		in
+		ion
+		iou
+		k
+		keep
+		kin
+		l
+		lan
+		le
+		lea
+		li
+		like
+		line
+		link
+		ln
+		lo
+		lowe
+		m
+		mail
+		man
+		me
+		men
+		mi
+		ml
+		mo
+		mp
+		n
+		name
+		ne
+		nee
+		no
+		non
+		nu
+		num
+		o
+		om
+		on
+		one
+		op
+		ope
+		open
+		own
+		p
+		paul
+		pe
+		pell
+		people
+		plea
+		pu
+		u
+		ui
+		ula
+		ule
+		ume
+		ump
+		un
+		uni
+		w
+		wa
+		wan
+		we
+		wh
+		wha
+		who
+		wi
+		wo

@@ -1,0 +1,305 @@
+hw3.txt
+
+Q1. Does the patch improve the performance of ls or make it worse? 
+Briefly explain.
+
+$ strace -cf ./ls -a
+	Patched:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 57.45    0.000567           8        71           write
+	  6.99    0.000069           4        16           mprotect
+	  4.86    0.000048           2        26           mmap
+	  4.56    0.000045          23         2           getdents
+	  3.75    0.000037           4         9           brk
+	  3.65    0.000036          12         3           munmap
+	  3.34    0.000033           3        13           close
+	  3.04    0.000030           3         9           read
+	  3.04    0.000030           3        10           open
+	  1.62    0.000016           1        11           fstat
+	  1.62    0.000016           8         2         2 statfs
+	  1.22    0.000012          12         1           openat
+	  0.91    0.000009           5         2           ioctl
+	  0.71    0.000007           4         2           rt_sigaction
+	  0.61    0.000006           6         1         1 stat
+	  0.61    0.000006           3         2         1 access
+	  0.41    0.000004           4         1           rt_sigprocmask
+	  0.41    0.000004           4         1           getrlimit
+	  0.41    0.000004           4         1           arch_prctl
+	  0.41    0.000004           4         1           set_tid_address
+	  0.41    0.000004           4         1           set_robust_list
+	  0.00    0.000000           0         1           execve
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.000987                   186         4 total
+
+	Unmodified:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 26.52    0.000205           8        26           mmap
+	 16.95    0.000131           8        16           mprotect
+	 12.68    0.000098          10        10           open
+	  7.63    0.000059           7         9           read
+	  6.08    0.000047           4        13           close
+	  5.56    0.000043           5         8           write
+	  5.43    0.000042           4        11           fstat
+	  2.98    0.000023           8         3           munmap
+	  2.46    0.000019          10         2           getdents
+	  2.20    0.000017           9         2         2 statfs
+	  1.94    0.000015           8         2         1 access
+	  1.81    0.000014           5         3           brk
+	  1.68    0.000013          13         1           openat
+	  1.03    0.000008           4         2           ioctl
+	  0.91    0.000007           7         1         1 stat
+	  0.91    0.000007           4         2           rt_sigaction
+	  0.91    0.000007           7         1           execve
+	  0.52    0.000004           4         1           getrlimit
+	  0.52    0.000004           4         1           arch_prctl
+	  0.52    0.000004           4         1           set_tid_address
+	  0.39    0.000003           3         1           rt_sigprocmask
+	  0.39    0.000003           3         1           set_robust_list
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.000773                   117         4 total
+
+$ strace -cf ./ls -A
+	Patched:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 72.86    0.000875          13        70           write
+	  5.00    0.000060           4        16           mprotect
+	  3.33    0.000040          20         2           getdents
+	  3.00    0.000036           4         9           brk
+	  2.58    0.000031          10         3           munmap
+	  1.67    0.000020           2         9           read
+	  1.67    0.000020           2        13           close
+	  1.58    0.000019           2        10           open
+	  1.58    0.000019           1        26           mmap
+	  1.17    0.000014           7         2         2 statfs
+	  1.00    0.000012           1        11           fstat
+	  1.00    0.000012          12         1           openat
+	  0.75    0.000009           5         2           ioctl
+	  0.58    0.000007           4         2           rt_sigaction
+	  0.50    0.000006           6         1         1 stat
+	  0.42    0.000005           3         2         1 access
+	  0.33    0.000004           4         1           getrlimit
+	  0.25    0.000003           3         1           rt_sigprocmask
+	  0.25    0.000003           3         1           arch_prctl
+	  0.25    0.000003           3         1           set_tid_address
+	  0.25    0.000003           3         1           set_robust_list
+	  0.00    0.000000           0         1           execve
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.001201                   185         4 total
+
+	Unmodified:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 25.61    0.000147           6        26           mmap
+	 19.16    0.000110           7        16           mprotect
+	 14.46    0.000083          12         7           write
+	 10.28    0.000059           6        10           open
+	  5.75    0.000033           3        13           close
+	  5.57    0.000032           3        11           fstat
+	  4.88    0.000028           3         9           read
+	  4.18    0.000024           8         3           munmap
+	  2.61    0.000015           8         2         2 statfs
+	  1.39    0.000008           4         2         1 access
+	  1.22    0.000007           7         1           execve
+	  1.05    0.000006           3         2           rt_sigaction
+	  0.87    0.000005           2         3           brk
+	  0.70    0.000004           4         1           getrlimit
+	  0.70    0.000004           4         1           set_tid_address
+	  0.52    0.000003           3         1           rt_sigprocmask
+	  0.52    0.000003           3         1           arch_prctl
+	  0.52    0.000003           3         1           set_robust_list
+	  0.00    0.000000           0         1         1 stat
+	  0.00    0.000000           0         2           ioctl
+	  0.00    0.000000           0         2           getdents
+	  0.00    0.000000           0         1           openat
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.000574                   116         4 total
+
+$ strace -cf ./ls -aA
+	Patched:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 53.11    0.000700          10        70           write
+	 12.29    0.000162           6        26           mmap
+	  9.56    0.000126           8        16           mprotect
+	  5.99    0.000079           8        10           open
+	  3.87    0.000051           6         9           read
+	  3.64    0.000048           4        13           close
+	  2.73    0.000036          12         3           munmap
+	  2.66    0.000035           3        11           fstat
+	  1.14    0.000015           8         2         2 statfs
+	  1.06    0.000014           7         2         1 access
+	  0.99    0.000013           1         9           brk
+	  0.61    0.000008           8         1           execve
+	  0.53    0.000007           4         2           rt_sigaction
+	  0.46    0.000006           6         1         1 stat
+	  0.30    0.000004           4         1           rt_sigprocmask
+	  0.30    0.000004           4         1           getrlimit
+	  0.30    0.000004           4         1           set_tid_address
+	  0.23    0.000003           3         1           arch_prctl
+	  0.23    0.000003           3         1           set_robust_list
+	  0.00    0.000000           0         2           ioctl
+	  0.00    0.000000           0         2           getdents
+	  0.00    0.000000           0         1           openat
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.001318                   185         4 total
+
+	Unmodified:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 17.94    0.000040           5         8           write
+	 10.76    0.000024           3         9           read
+	  8.97    0.000020           2        10           open
+	  8.52    0.000019          10         2           getdents
+	  7.62    0.000017           1        13           close
+	  7.17    0.000016           8         2         2 statfs
+	  6.28    0.000014           1        26           mmap
+	  6.28    0.000014           5         3           munmap
+	  5.83    0.000013          13         1           openat
+	  4.48    0.000010           5         2           ioctl
+	  4.04    0.000009           1        11           fstat
+	  3.59    0.000008           8         1         1 stat
+	  3.59    0.000008           3         3           brk
+	  3.14    0.000007           4         2         1 access
+	  1.79    0.000004           4         1           getrlimit
+	  0.00    0.000000           0        16           mprotect
+	  0.00    0.000000           0         2           rt_sigaction
+	  0.00    0.000000           0         1           rt_sigprocmask
+	  0.00    0.000000           0         1           execve
+	  0.00    0.000000           0         1           arch_prctl
+	  0.00    0.000000           0         1           set_tid_address
+	  0.00    0.000000           0         1           set_robust_list
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.000223                   117         4 total
+
+$ strace -cf ./ls -Aa
+	Patched:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 44.99    0.000570           8        71           write
+	 12.55    0.000159           6        26           mmap
+	  9.79    0.000124           8        16           mprotect
+	  6.31    0.000080           8        10           open
+	  3.95    0.000050           6         9           read
+	  3.95    0.000050           4        13           close
+	  3.47    0.000044          22         2           getdents
+	  3.16    0.000040           4        11           fstat
+	  2.92    0.000037           4         9           brk
+	  2.60    0.000033          11         3           munmap
+	  1.18    0.000015           8         2         2 statfs
+	  1.10    0.000014           7         2         1 access
+	  1.03    0.000013          13         1           openat
+	  0.71    0.000009           5         2           ioctl
+	  0.47    0.000006           6         1         1 stat
+	  0.47    0.000006           3         2           rt_sigaction
+	  0.32    0.000004           4         1           getrlimit
+	  0.32    0.000004           4         1           arch_prctl
+	  0.24    0.000003           3         1           rt_sigprocmask
+	  0.24    0.000003           3         1           set_tid_address
+	  0.24    0.000003           3         1           set_robust_list
+	  0.00    0.000000           0         1           execve
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.001267                   186         4 total
+
+	Unmodified:
+	% time     seconds  usecs/call     calls    errors syscall
+	------ ----------- ----------- --------- --------- ----------------
+	 24.42    0.000158           6        26           mmap
+	 19.47    0.000126           8        16           mprotect
+	 13.76    0.000089          11         8           write
+	 11.59    0.000075           8        10           open
+	  5.87    0.000038           3        13           close
+	  5.72    0.000037           4         9           read
+	  5.10    0.000033           3        11           fstat
+	  3.71    0.000024           8         3           munmap
+	  2.32    0.000015           8         2         2 statfs
+	  2.16    0.000014           5         3           brk
+	  1.24    0.000008           4         2         1 access
+	  1.08    0.000007           7         1           execve
+	  0.93    0.000006           3         2           rt_sigaction
+	  0.62    0.000004           4         1           rt_sigprocmask
+	  0.62    0.000004           4         1           getrlimit
+	  0.46    0.000003           3         1           arch_prctl
+	  0.46    0.000003           3         1           set_tid_address
+	  0.46    0.000003           3         1           set_robust_list
+	  0.00    0.000000           0         1         1 stat
+	  0.00    0.000000           0         2           ioctl
+	  0.00    0.000000           0         2           getdents
+	  0.00    0.000000           0         1           openat
+	------ ----------- ----------- --------- --------- ----------------
+	100.00    0.000647                   117         4 total
+
+Overall, the patch makes the command perform more calls and take longer time to
+execute. The patched version typically takes more than 0.001s to execute, 
+where the unmodified version takes less than 0.001s. However, the difference 
+is fairly minimal. The patch fixed the bug with a tradeoff of a small amount 
+of execution time.  
+
+
+
+
+===============================================================================
+Q2. If your company adopts this patched version of Coreutils instead of the 
+default one, what else should you watch out for? Might this new version of 
+Coreutils introduce other problems with your application?
+
+    The original version of ls ignores dot and dot dot only when ignore_mode 
+    is IGNORE_DEFAULT. The patch unconditionally ignores dot and dot dot. It 
+    might cause problems if ignore_mode is set to something else, and ignoring 
+    dots in those cases is not intended. Therefore, the patched version could 
+    potentially be incompatible with some operations and updates of unmodified 
+    Coreutils. 
+
+
+
+===============================================================================
+Q3. What happens when this script is invoked on an empty file like /dev/null, 
+and why?
+
+$ ./randline.py -n 1 /dev/null
+Traceback (most recent call last):
+  File "./randline.py", line 70, in <module>
+    main()
+  File "./randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "./randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.7/random.py", line 274, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is
+    empty
+IndexError: list index out of range
+
+The function chooseline() used in the for loop near the end of main() requires
+the number of lines to be greater than 0. chooseline() uses the function choice
+from random.py in python2.7, which "chooses a random element from a non-empty
+sequence". Index error raises if the sequence is empty. This happens because
+in line 55, the conditional only guards against the situation when numlines <
+0 instead of <= 0. 
+
+
+
+===============================================================================
+Q4. What happens when this script is invoked with Python 3 rather than Python 
+2, and why? (You can run Python 3 on the SEASnet hosts by using the command 
+python3 instead of python.)
+
+$ python3 ./randline.py -n 1 assign1.html
+  File "./randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+There is a syntax error when handling exceptions due to the difference between
+python2 and python3. In python3, the correct syntax could be:
+	except IOError as e:
+        parser.error("I/O error({0}): {1}".
+                     format(e.errno, e.strerror))
+
+
+
+
+
+
+

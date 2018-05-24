@@ -1,0 +1,27 @@
+#! /bin/sh
+# case-insensitive
+tr [:upper:] [:lower:] |
+# replace ` with '
+tr [\`] \'  |
+# delete question marks
+sed 's/?//g' |
+# delete leading whitespaces
+sed 's/^ *//g' |
+# delete newlines after every <tr>
+sed -n '/<tr>/ {s/.*//; N; N; s/\n//g; p;}' |
+# delete English words
+sed 's/<td>.*<td>//' |
+# delete brackets and their content 
+sed 's/<[^>]*.//g' |
+# match hawaiian words
+grep ^[pk\'mnwlhaeiou] |
+# translate commas to new lines
+tr , '\n' |
+# replace whitespaces with new lines
+sed 's/ /\n/g' |
+# remove improperly formatted hawaiian words
+sed "/[^pk\'mnwlhaeiou]/d" |
+# remove empty lines
+sed '/^\s*$/d' |
+# sort and remove duplicates
+sort -u

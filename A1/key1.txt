@@ -1,0 +1,172 @@
+***********EX1************
+wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/
+cp assign1.html exer1.html
+cp assign1.html exer2.html
+cp assign1.html exer3.html
+1.
+emacs exer1.html
+2.
+C-s H T M L
+3.
+C-g M-> C-r s c a v e n g e r
+4.
+C-g C-r s e l f - r e f e r e n t i a l
+5.
+C-g C-r a r r o w
+6.
+C-e
+7.
+C-a
+8.The tasks above did not take many keystrokes by using these commands: C-s, C-r, C-e, C-a.
+9.I did not use arrow keys.
+10.C-x C-c
+
+***********EX2************
+1.
+emacs exer2.html
+2.
+M-g M-g 18 C-k
+3.
+C-s D E L E T E - M E C-a C-k
+4.
+M-< C-s H T M L _ c o m m e n t C-s C-a C-p C-SP C-n C-n C-n C-w
+5.
+M-< C-s < ! - - (Move the cursor using arrow keys and delete the short comment)
+C-s < ! - - C-a C-SP C-n C-n C-n C-n C-w C-s < ! - - C-a C-k
+
+C-x C-s C-x C-c
+
+diff -u exer1.html exer2.html >exer2.diff
+emacs exer2.diff
+C-x C-c
+
+***********EX3************
+1.
+emacs exer3.html
+2.
+M-% A s s i g n m e n t SP 1 Enter A s s i g n m e n t SP 2 1 Enter y y C-g
+3.
+M-% U T F - 8 Enter U S - A S C I I Enter y C-g
+4.
+M-< C-M-s [ ^ [ : a s c i i : ] ] C-a C-k
+5.
+M-< C-e Enter < / o l >
+6.
+C-x C-s C-x C-c
+diff -u exer1.html exer3.html >exer3.diff
+emacs exer3.diff
+C-x C-c
+
+***********EX4************
+1.
+cat exer2.html exer2.diff >exer4.html
+2.
+emacs exer4.html
+3.
+<Move the cursor to the start of a string>
+C-SP C-e M-w <Move the cursor to its original location> C-y
+
+4. Repeat the process for other statements
+<Move the cursor to the start of a string>
+C-SP C-n C-n C-n C-n C-e M-w <Move the cursor to its original location> C-y
+<Move the cursor to the start of a string>
+C-SP <RIGHT> <RIGHT> <RIGHT> <RIGHT> <RIGHT> <RIGHT> <RIGHT> M-w <Move the cursor to its original location> C-y
+<Move the cursor to the start of a string>
+C-SP C-n C-n C-n C-e M-w <Move the cursor to its original location> C-y
+<Move the cursor to the start of a string>
+C-SP C-e M-w <Move the cursor to its original location> C-y
+<Move the cursor to the start of a string>
+C-SP C-e M-w <Move the cursor to its original location> C-y
+
+5.
+<Move the cursor to the start of the diff part> C-SP M-> C-w
+6.
+C-x u
+7.
+<Move the cursor to the start of the diff part> < ! - - M-> - - >
+<Repeat the process multiple times to comment out the entire part>
+
+8.
+C-M-s < o l > C-s C-s C-s C-s C-s C-s
+There are 7 <ol>.
+
+M-x replace-string Enter < o l > Enter < o L > Enter
+
+9.
+C-x C-s C-x C-c
+diff -u exer1.html exer4.html >exer4.diff
+emacs exer4.diff
+
+***********EX5************
+1.
+emacs Enter M-! m k d i r SP ~ / j u n k
+2.
+C-g C-x C-f j u n k / h e l l o . c Enter <Copy and paste the code> C-x C-s
+3.
+M-x compile Enter Backspace Backspace Backspace Backspace Backspace Backspace Backspace Backspace g c c SP - o SP h e l l o SP  h e l l o . c Enter
+4.
+C-x b ~ / j u n k / h e l l o - o u t Enter
+C-u M-! . / h e l l o Enter
+5.
+M-x SP append-to-file SP ~ / k e y 1 . t x t Enter
+
+#include <stdio.h>
+int
+main (void)
+{
+  char n = '\n', b = '\\', q = '"';
+  char const *p = "#include <stdio.h>%cint%cmain (void)%c{%c  char n = '%cn', b = '%c%c', q = '%c';%c  char const *p = %c%s%c;%c  printf (p, n, n, n, n, b, b, b, q, n, q, p, q, n, n, n, n);%c  return 0;%c}%c";
+  printf (p, n, n, n, n, b, b, b, q, n, q, p, q, n, n, n, n);
+  return 0;
+}
+
+***********EX6************
+1.
+emacs
+M-x emacs-lisp-mode
+C-x b Enter
+2.
+( r a n d o m SP " 7 0 4 - 9 7 8 - 2 1 4 " ) M-: ( e v a l - p r i n t - l a s t - s e x p) Enter C-j Enter
+Output:
+-1721688295628624791
+
+3.
+( s e t q SP x ( r a n d o m ) ) C-j Enter ( s e t q SP y ( r a n d o m ) ) C-j
+For x, I get 667963403112442386. For y, I get 1549346855423863575.
+
+4.
+( * SP x SP y ) C-j
+Output:
+-581095310623437410
+Incorrect
+
+5.
+M-: ( * SP x SP y ) Enter
+
+Output:
+-581095310623437410 (#o337574216231551206636, #x37ef88e4cda50d9e)
+
+6.C-h f r a n d o m Enter
+They are not truly random in the mathematical sense because random
+numbers on the computer are calculated using a certain algorithm.
+Random numbers have a fixed range on the computer between 'most-
+negative-fixnum' and 'most-positive-fixnum' (-2305843009213693952~
+2305843009213693951). A series of pseudo-random numbers is generated
+in a deterministic fashion. The numbers are not truly random, but
+they have certain properties that mimic a random series. Pseudo-
+random numbers are generated from a random "seed value".  Starting
+from any given seed, the 'random' function always generates the
+same sequence of numbers. You can get a constant random number
+sequence by setting the seed value constant.
+
+7.
+If the actual product exceeds the range of the random numbers,
+a new random number will be generated as the incorrect result of
+the two random numbers. If we set n = 2305843009213693952, then
+there are n(2n+1) possible answers (with repetitions) for
+multiplying two random numbers, ranging from -n(n-1) to n^2. Only
+when the actual answer is between -n and n-1, it does not cause
+overflow and is mathematically correct. Therefore, any products
+from -n(n-1) to -n-1 and from n to n^2 will cause overflow.
+The possibility for generating an incorrect answer is
+(2n^2-3n+3)/(2n^2+n).

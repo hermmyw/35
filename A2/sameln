@@ -1,0 +1,60 @@
+#! /bin/sh
+# sameln
+# Declare variables
+declare -a a
+D=$1
+
+IFS=$'\n'
+files=$(find $D -maxdepth 1 -type f | sort)
+#filesWithDot=$(ls -a $D | grep ^[.] | sort)
+
+
+# Add files into the array of files
+i=0
+
+# Add other files
+for f in $files
+do
+    a[$i]="$f"
+    ((i++))
+done
+
+# Report the error if the file is not readable
+for ((j=0;j<i;j++))
+do
+    if [ ! -r "${a[$j]}" ]
+    then
+        echo "ERROR: ${a[$j]} is not readable"
+    fi
+done
+
+
+for ((k=0;k<i;k++))
+do
+	if [[ -L ${a[$k]} ]]
+	then
+	    continue
+	fi
+
+    for ((j=k+1;j<i;j++))
+    do
+        # Only look at the readable regular files
+        if [[ -r "${a[$j]}" && -f "${a[$j]}" && -r "${a[$k]}" && -f "${a[$k]}" ]]
+        then
+            # Find out if the files are duplicates
+	    if [[ "${a[$k]}"!="${a[$j]}" ]]
+	    then
+		
+            cmp -s "${a[$j]}" "${a[$k]}"
+            if [ $? -eq 0 ]
+            then
+                # Replace the duplicate with hard links to the first file
+                echo "Replace ${a[$j]} with ${a[$k]}"
+		        echo "Remove ${a[$j]}"
+                ln -fP "${a[$k]}" "${a[$j]}"
+            fi
+	    fi
+        fi
+    done
+done
+unset IFS

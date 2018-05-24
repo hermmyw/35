@@ -1,0 +1,87 @@
+Instruction
+Write a new script shuf.py in the style of randline.py; your script should implement the GNU shuf command that is part of GNU Coreutils. 
+
+You should already have a copy of the shuf source code and documentation; look at the files you created in the laboratory. 
+
+
+However, GNU shuf is written in C, whereas you want a Python implementation so that you can more easily add new features to it.
+
+Your implementation should support the following shuf options, with the same behavior as GNU shuf: 
+
+
+
+--echo (-e), 
+
+--head-count (-n), 
+
+--repeat (-r), and 
+
+--help. 
+
+It should also support any number (including zero) of non-option arguments, as well as the argument "-" meaning standard input.
+
+
+
+
+
+
+
+
+
+
+ Your program need not support the other options of GNU shuf. As with GNU shuf, your program should report an error if given invalid arguments.
+
+
+
+
+
+
+
+
+Your implementation of shuf.py should not import any modules other than argparse, string and the modules that randline.py already imports. Don't forget to change its usage message to accurately describe the modified behavior.
+
+
+
+
+
+
+
+Port your shuf.py implementation to Python 3; among other things, this means you'll need to switch it from the optparse to the argparse module. Make sure that it still works with Python 2. Don't rewrite it from scratch; make as few changes as is reasonable.
+
+
+
+7.2 'shuf': Shuffling text
+==========================
+
+'shuf' shuffles its input by outputting a random permutation of its
+input lines.  Each output permutation is equally likely.  Synopses:
+
+     shuf [OPTION]... [FILE]
+     shuf -e [OPTION]... [ARG]...
+     shuf -i LO-HI [OPTION]...
+
+   'shuf' has three modes of operation that affect where it obtains its
+input lines.  By default, it reads lines from standard input.  The
+following options change the operation mode:
+
+'-e'
+'--echo'
+     Treat each command-line operand as an input line.
+
+
+'-n LINES'
+'--head-count=COUNT'
+     Output at most COUNT lines.  By default, all input lines are
+     output.
+
+'-r'
+'--repeat'
+     Repeat output values, that is, select with replacement.  With this
+     option the output is not a permutation of the input; instead, each
+     output line is randomly chosen from all the inputs.  This option is
+     typically combined with '--head-count'; if '--head-count' is not
+     given, 'shuf' repeats indefinitely.
+
+
+
+enLINESr enLINES er nLINESr e nLINES r 0

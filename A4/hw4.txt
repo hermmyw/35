@@ -1,0 +1,104 @@
+hw4.txt
+frobcmp():
+	arguments: char const * a, b
+		each points to an array of non-space bytes
+		separated by space byte
+		abcdef shfewie
+	return: int
+	a:b - negative, zero, positive
+	standard lexicographic comparison on the non-space bytes
+	memcmp function
+	frobnicated: encoded via memfrob
+	return = running memcmp on the nonencoded(unfrobnicated) arrays.
+	shorter < longer
+
+	\0Quick23 > \0Jumps!
+	null bytes are allowed
+	not invoke memfrob: memory doesnt contain unfrobnicated
+	unfrobnicate them by hand
+
+sfrob:
+	reads frobnicated text lines from stdin
+	sort them
+	write a sorted version in frobnicated form(encoded form)
+	if stdin ends in a partial record that doesnt have a trailing space, behave as a space were appended
+	ascending or descending order + other
+	provide a flag as an argument to the function
+	virtual functions
+	function pointers
+
+Use:
+	stdio.h - I/O
+	malloc
+	realloc
+	free   - hold inputs
+	qsort to sort
+	continue to read until it reaches EOP
+	/proc/self/status: growing file
+	/usr/local/cs/jdk*/jre/lib/rt.jar - large
+	error: exit 1 stderr
+
+Test:
+	printf | ./sfrob | od -ta
+Pointers of functions
+
+double (*func_ptr)(double, double)
+func_ptr = &pow   --> a func declared earlier
+func_ptr = pow
+
+input:
+getc(FILE *fp)
+
+output:
+putc(int c, FILE *pf)
+char *fgets(char *buf, int n, FILE *fp)
+int fputs(const char *s, FILE *fp)
+
+qsort
+int compare(const void *a, const void *b)
+{
+	return (*(int*)a - *(int*)b)
+}
+return - if a<b, 0 if a==b, + if a>b
+
+...
+qsort(values, 6, sizeof(4), compare)
+
+Valgrind
+valgrind --leak-check-full ./sfrod < foo.txt
+
+
+frobcmp
+a and b input
+char const*
+a,b point to array of non-space bytes
+return int:
+	-: a<b
+	+: a>b
+	0: a=
+
+read stdin byte by byte(getchar)
+	newline-delimited
+	read until EOF
+each byte if frobnicated: x^42
+00101010
+a^42^42=a
+sort records without decoding(qsort, frobcmp)
+output to stdout(fprintf, putchar)
+
+dynamic memory allocation: malloc, realloc, free
+
+should work on empty and large files
+
+sfrob
+cat sybjre\nobl > foo.txt
+./sfrod < foo.txt
+read stdin
+printf... | ./sfrob
+
+1D and 2D array
+od -c or od -a (test output)
+print error message:
+	close files
+	
+memory leaks

@@ -1,0 +1,239 @@
+lab3.txt
+
+1. Grab the Coreutils 8.29 source code compressed tarball and verify its
+signature with the GNU keyring.
+$ wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.29.tar.xz
+$ wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.29.tar.xz.sig
+$ wget https://ftp.gnu.org/gnu/gnu-keyring.gpg
+
+$ gpg --verify --keyring ./gnu-keyring.gpg coreutils-8.29.tar.xz.sig
+gpg: Signature made Wed 27 Dec 2017 10:29:05 AM PST using RSA key ID 306037D9
+gpg: /u/cs/ugrad/huimin/.gnupg/trustdb.gpg: trustdb created
+gpg: Good signature from "Pádraig Brady <P@draigBrady.com>"
+gpg:                 aka "Pádraig Brady <pbrady@redhat.com>"
+gpg:                 aka "Pádraig Brady <pixelbeat@gnu.org>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 6C37 DC12 121A 5006 BC1D  B804 DF6F D971 3060 37D9
+
+The command outputs a warning which states that the signature is not trusted.
+It happens because I need to use my private key to sign the key from Pádraig
+Brady as trusted. 
+
+$ tar xvf coreutils-8.29.tar.xz
+Unzip coreutils-8.29
+
+
+
+2. Compile and install your copy of Coreutils into a temporary directory of
+your own. 
+$ mkdir lab3
+Create a directory to store the coreutils, which will be later installed.
+
+$ cd coreutils-8.29
+$ emacs INSTALL
+
+Installing coreutils into lab3:
+$ ./configure --prefix=/w/home.20/cs/ugrad/huimin/lab3
+$ make
+$ make install
+Note: --prefix option has to follow ./configure.
+
+
+3. Reproduce the bug on your machine with the unmodified version of coreutils.
+$ cd ~/lab3/bin
+$ ./ls -a
+$ ./ls -A
+$ ./ls -aA
+$ ./ls -Aa
+
+Only `ls -A` shows the file list without . and .., which indicates that 'a'
+indeed overwrites 'A' :
+total 25956
+-rwxr-xr-x 1 huimin csugrad 194344 Apr 23 19:40 '['
+-rwxr-xr-x 1 huimin csugrad 293744 Apr 23 19:40  b2sum
+-rwxr-xr-x 1 huimin csugrad 187096 Apr 23 19:40  base32
+-rwxr-xr-x 1 huimin csugrad 186624 Apr 23 19:40  base64
+-rwxr-xr-x 1 huimin csugrad 149912 Apr 23 19:40  basename
+-rwxr-xr-x 1 huimin csugrad 171848 Apr 23 19:40  cat
+-rwxr-xr-x 1 huimin csugrad 299848 Apr 23 19:40  chcon
+-rwxr-xr-x 1 huimin csugrad 297712 Apr 23 19:40  chgrp
+-rwxr-xr-x 1 huimin csugrad 278072 Apr 23 19:40  chmod
+...
+
+
+The rest three commands output the same file list with . and .. :
+total 25972
+drwxr-xr-x 2 huimin csugrad  12288 Apr 25 14:29  .
+drwxr-xr-x 5 huimin csugrad   4096 Apr 23 17:53  ..
+-rwxr-xr-x 1 huimin csugrad 194344 Apr 23 19:40 '['
+-rwxr-xr-x 1 huimin csugrad 293744 Apr 23 19:40  b2sum
+-rwxr-xr-x 1 huimin csugrad 187096 Apr 23 19:40  base32
+-rwxr-xr-x 1 huimin csugrad 186624 Apr 23 19:40  base64
+-rwxr-xr-x 1 huimin csugrad 149912 Apr 23 19:40  basename
+-rwxr-xr-x 1 huimin csugrad 171848 Apr 23 19:40  cat
+...
+
+4. Apply the patch of Bug#30963 Message #10.
+Create the patch file inside ~/coreutils-8.29:
+$ cd ~/coreutils-8.29
+$ emacs patchfile.diff
+Patch:
+$ patch -p1 < patchfile.diff
+patching file NEWS
+Hunk #1 FAILED at 4.
+1 out of 1 hunk FAILED -- saving rejects to file NEWS.rej
+patching file src/ls.c
+Hunk #1 succeeded at 1900 (offset -3 lines).
+patching file tests/local.mk
+patching file tests/ls/a-option.sh
+
+The patch is successfully applied, except that there is a trivial problem with
+NEWS, which can be ignored. tests/local.mk is added to contain all test cases.
+tests/ls/a-option.sh is a new file. 
+
+5.Build (but do not install) the fixed version. 
+$ make
+ cd . && /bin/sh /u/cs/ugrad/huimin/coreutils-8.29/build-aux/missing automake-
+ 1.15 --gnu Makefile
+/u/cs/ugrad/huimin/coreutils-8.29/build-aux/missing: line 81: automake-1.15:
+command not found
+WARNING: 'automake-1.15' is missing on your system.
+         You should only need it if you modified 'Makefile.am' or
+         'configure.ac' or m4 files included by 'configure.ac'.
+         The 'automake' program is part of the GNU Automake package:
+         <http://www.gnu.org/software/automake>
+         It also requires GNU Autoconf, GNU m4 and Perl in order to run:
+         <http://www.gnu.org/software/autoconf>
+         <http://www.gnu.org/software/m4/>
+         <http://www.perl.org/>
+make: *** [Makefile:5997: Makefile.in] Error 127
+
+The error message indicates that I need to install 'automake-1.15'. I run the
+following command to install the program again:
+$ autoreconf -f -i
+$ make
+/bin/sh ./config.status --recheck
+running CONFIG_SHELL=/bin/sh /bin/sh ./configure --prefix=/w/home.20/cs/ugrad
+/huimin/lab3 --no-create --no-recursion
+...
+Rerunning ./configure. I think this is due to the previous 'automake -1/15'
+error. The installation process is repeated.
+make
+GEN
+CC
+CCLD
+...
+make[2]: Leaving directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29'
+Making all in gnulib-tests
+make[2]: Entering directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+make  all-recursive
+make[3]: Entering directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+Making all in .
+make[4]: Entering directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+make[3]: Leaving directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+make[2]: Leaving directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29/
+gnulib-tests'
+make[1]: Leaving directory '/w/home.20/cs/ugrad/huimin/coreutils-8.29'
+
+GEN means generating files; CC means compiling C files into object files; CCLD
+means linking the compiled objects together. The difference between this $
+make and the previous $ make is that they execute the make files in different
+directories. First make executed the make files in ~/lab3 as specified in
+the configure command. Second make executed the make files in
+~/coreutils-8.29. By examining the diff file between two messages of make,
+I find that many filenames in second make contain "src_" prefix.
+
+6. Testing that the modified ls works and that the installed ls doesn't. Use
+the test case that comes with the patch.
+$ cd ~/coreutils-8.29/src
+$ ./ls -l -a
+$ ./ls -l -A
+$ ./ls -l -aA
+$ ./ls -l -Aa
+
+-a and -Aa show the file list with . and ..
+   total 41680
+   drwxr-xr-x  4 huimin csugrad  32768 Apr 25 14:32  .
+   drwxr-xr-x 12 huimin csugrad   8192 Apr 25 14:51  ..
+   -rwxr-xr-x  1 huimin csugrad 194344 Apr 23 19:48 '['
+   -rwxr-xr-x  1 huimin csugrad 293744 Apr 23 19:48  b2sum
+   -rw-r--r--  1 huimin csugrad 116136 Apr 23 19:48  b2sum-md5sum.o
+   -rwxr-xr-x  1 huimin csugrad 187096 Apr 23 19:48  base32
+   -rw-r--r--  1 huimin csugrad  55976 Apr 23 19:48  base32-base64.o
+   -rwxr-xr-x  1 huimin csugrad 186624 Apr 23 19:48  base64
+   -rw-r--r--  1 huimin csugrad  55960 Apr 23 19:48  base64-base64.o
+   -rw-r--r--  1 huimin csugrad   9515 Sep 19  2017  base64.c
+   -rwxr-xr-x  1 huimin csugrad 149912 Apr 23 19:48  basename
+   -rw-r--r--  1 huimin csugrad   5003 Sep 19  2017  basename.c
+   -rw-r--r--  1 huimin csugrad  33336 Apr 23 19:48  basename.o
+   drwxr-xr-x  3 huimin csugrad   4096 Apr 23 19:48  blake2
+   -rwxr-xr-x  1 huimin csugrad 171848 Apr 23 19:48  cat
+   -rw-r--r--  1 huimin csugrad  22071 Sep 19  2017  cat.c
+   ...
+
+-A and -aA show the file list without . and ..
+   total 41636
+   -rwxr-xr-x 1 huimin csugrad 194344 Apr 23 19:48 '['
+   -rwxr-xr-x 1 huimin csugrad 293744 Apr 23 19:48  b2sum
+   -rw-r--r-- 1 huimin csugrad 116136 Apr 23 19:48  b2sum-md5sum.o
+   -rwxr-xr-x 1 huimin csugrad 187096 Apr 23 19:48  base32
+   -rw-r--r-- 1 huimin csugrad  55976 Apr 23 19:48  base32-base64.o
+   -rwxr-xr-x 1 huimin csugrad 186624 Apr 23 19:48  base64
+   -rw-r--r-- 1 huimin csugrad  55960 Apr 23 19:48  base64-base64.o
+   -rw-r--r-- 1 huimin csugrad   9515 Sep 19  2017  base64.c
+   -rwxr-xr-x 1 huimin csugrad 149912 Apr 23 19:48  basename
+   -rw-r--r-- 1 huimin csugrad   5003 Sep 19  2017  basename.c
+   -rw-r--r-- 1 huimin csugrad  33336 Apr 23 19:48  basename.o
+   drwxr-xr-x 3 huimin csugrad   4096 Apr 23 19:48  blake2
+   -rwxr-xr-x 1 huimin csugrad 171848 Apr 23 19:48  cat
+   -rw-r--r-- 1 huimin csugrad  22071 Sep 19  2017  cat.c
+   -rw-r--r-- 1 huimin csugrad  76760 Apr 23 19:48  cat.o
+   -rwxr-xr-x 1 huimin csugrad 299848 Apr 23 19:48  chcon
+   -rw-r--r-- 1 huimin csugrad  16256 Sep 19  2017  chcon.c
+   -rw-r--r-- 1 huimin csugrad  76456 Apr 23 19:48  chcon.o
+   -rwxr-xr-x 1 huimin csugrad 297712 Apr 23 19:48  chgrp
+   -rw-r--r-- 1 huimin csugrad   8873 Sep 19  2017  chgrp.c
+   ...
+
+Therefore, 'A' successfully overwrites 'a' in -aA. The bug is corrected by the
+patch file.
+
+
+
+$ cd ~/lab3/bin
+$ ./ls -l -a
+$ ./ls -l -A
+$ ./ls -l -aA
+$ ./ls -l -Aa
+
+The buggy version still exists. Only -A shows the file list without . and ..,
+which shows that a overwrites A in -aA.
+   $ls -l -A:
+   total 25956
+   -rwxr-xr-x 1 huimin csugrad 194344 Apr 23 19:40 '['
+   -rwxr-xr-x 1 huimin csugrad 293744 Apr 23 19:40  b2sum
+   -rwxr-xr-x 1 huimin csugrad 187096 Apr 23 19:40  base32
+   -rwxr-xr-x 1 huimin csugrad 186624 Apr 23 19:40  base64
+   -rwxr-xr-x 1 huimin csugrad 149912 Apr 23 19:40  basename
+   -rwxr-xr-x 1 huimin csugrad 171848 Apr 23 19:40  cat
+   ...
+
+   $ls -l -a and $ls -l -aA and $ls -l -Aa:
+   total 25972
+   drwxr-xr-x 2 huimin csugrad  12288 Apr 25 14:29  .
+   drwxr-xr-x 5 huimin csugrad   4096 Apr 23 17:53  ..
+   -rwxr-xr-x 1 huimin csugrad 194344 Apr 23 19:40 '['
+   -rwxr-xr-x 1 huimin csugrad 293744 Apr 23 19:40  b2sum
+   -rwxr-xr-x 1 huimin csugrad 187096 Apr 23 19:40  base32
+   -rwxr-xr-x 1 huimin csugrad 186624 Apr 23 19:40  base64
+   -rwxr-xr-x 1 huimin csugrad 149912 Apr 23 19:40  basename
+   -rwxr-xr-x 1 huimin csugrad 171848 Apr 23 19:40  cat
+   ...

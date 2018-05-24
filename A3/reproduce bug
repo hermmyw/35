@@ -1,0 +1,46 @@
+Huimins-MacBook-Pro:~ hermmy$ ssh huimin@lnxsrv09.seas.ucla.edu
+huimin@lnxsrv09.seas.ucla.edu's password: 
+Last login: Wed May  2 16:16:21 2018 from wifi-natpool-131-179-59-101.host.ucla.edu
+*****************************************************************************
+                        lnxsrv09.seas.ucla.edu RHEL 7
+*****************************************************************************
+
+        RedHat 7 -- may not behave the same as other lnxsrv
+        Will be used by CS 32, CS 35L, CS 111, and CS 131
+
+*****************************************************************************
+*****************************************************************************
+* ========================================================================= *
+* SEASnet Computing Access                                                  *
+*                                                                           *
+* Priority is given both on the servers and in the student labs to those    *
+* students doing coursework. Computing support for research is provided by  *
+* each department.                                                          *
+*****************************************************************************
+* For assistance please contact help@seas.ucla.edu or call 206-6864.        *
+*****************************************************************************
+[huimin@lnxsrv09 ~]$ cd lab4/bin
+[huimin@lnxsrv09 ~/lab4/bin]$ tmp=$(mktemp -d)
+[huimin@lnxsrv09 ~/lab4/bin]$ cd $tmp
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch now
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ sleep 1
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch now1
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ TZ=UTC0 ~/lab4/bin/ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ cd
+[huimin@lnxsrv09 ~]$ rm -fr $temp
+[huimin@lnxsrv09 ~]$ rm -fr $tmp
+[huimin@lnxsrv09 ~]$ 
+
+
+
+
+
+

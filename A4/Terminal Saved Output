@@ -1,0 +1,683 @@
+Huimins-MacBook-Pro:~ hermmy$ ssh huimin@lnxsrv09.seas.ucla.edu
+huimin@lnxsrv09.seas.ucla.edu's password: 
+Last login: Wed May  2 16:16:21 2018 from wifi-natpool-131-179-59-101.host.ucla.edu
+*****************************************************************************
+                        lnxsrv09.seas.ucla.edu RHEL 7
+*****************************************************************************
+
+        RedHat 7 -- may not behave the same as other lnxsrv
+        Will be used by CS 32, CS 35L, CS 111, and CS 131
+
+*****************************************************************************
+*****************************************************************************
+* ========================================================================= *
+* SEASnet Computing Access                                                  *
+*                                                                           *
+* Priority is given both on the servers and in the student labs to those    *
+* students doing coursework. Computing support for research is provided by  *
+* each department.                                                          *
+*****************************************************************************
+* For assistance please contact help@seas.ucla.edu or call 206-6864.        *
+*****************************************************************************
+[huimin@lnxsrv09 ~]$ cd lab4/bin
+[huimin@lnxsrv09 ~/lab4/bin]$ tmp=$(mktemp -d)
+[huimin@lnxsrv09 ~/lab4/bin]$ cd $tmp
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch now
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ sleep 1
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ touch now1
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ TZ=UTC0 ~/lab4/bin/ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+[huimin@lnxsrv09 /tmp/tmp.SXIdRxQbYI]$ cd
+[huimin@lnxsrv09 ~]$ rm -fr $temp
+[huimin@lnxsrv09 ~]$ rm -fr $tmp
+[huimin@lnxsrv09 ~]$ realpath lab4
+/w/home.20/cs/ugrad/huimin/lab4
+[huimin@lnxsrv09 ~]$ ls lab4
+bin  share
+[huimin@lnxsrv09 ~]$ cd lab4
+[huimin@lnxsrv09 ~/lab4]$ cd ~/coreutils-with-bug/src
+[huimin@lnxsrv09 ~/coreutils-with-bug/src]$ emacs ls.c
+[huimin@lnxsrv09 ~/coreutils-with-bug/src]$ cd ..
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ ls
+ABOUT-NLS      configure       Makefile        src
+aclocal.m4     configure.ac    Makefile.am     stamp-h1
+announce-gen   COPYING         Makefile.cfg    tests
+AUTHORS        coreutils.diff  Makefile.in     THANKS
+build-aux      doc             Makefile.maint  THANKS-to-translators
+config.h       GNUmakefile     man             THANKStt.in
+config.hin     INSTALL         old             TODO
+config.log     lib             po              unpack.made
+config.status  m4              README
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs THANKS
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs config.log
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs configure
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs INSTALL
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs configure
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ emacs coreutils.diff 
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ cd ~/lab4/bin
+[huimin@lnxsrv09 ~/lab4/bin]$ ls
+'['         dd          fold       md5sum    printenv   stat    uname
+ basename   df          groups     mkdir     printf     stty    unexpand
+ cat        dir         head       mkfifo    ptx        sum     uniq
+ chgrp      dircolors   hostid     mknod     pwd        sync    unlink
+ chmod      dirname     hostname   mv        readlink   tac     uptime
+ chown      du          id         nice      rm         tail    users
+ chroot     echo        install    nl        rmdir      tee     vdir
+ cksum      env         join       nohup     seq        test    wc
+ comm       expand      kill       od        sha1sum    touch   who
+ cp         expr        link       paste     shred      tr      whoami
+ csplit     factor      ln         pathchk   sleep      true    yes
+ cut        false       logname    pinky     sort       tsort
+ date       fmt         ls         pr        split      tty
+[huimin@lnxsrv09 ~/lab4/bin]$ emacs ls
+[huimin@lnxsrv09 ~/lab4/bin]$ cd ~/coreutils-with-bug/src
+[huimin@lnxsrv09 ~/coreutils-with-bug/src]$ emacs ls.c
+[huimin@lnxsrv09 ~/coreutils-with-bug/src]$ cd ..
+[huimin@lnxsrv09 ~/coreutils-with-bug]$ cd lib
+[huimin@lnxsrv09 ~/coreutils-with-bug/lib]$ emacs utimecmp.c
+[huimin@lnxsrv09 ~/coreutils-with-bug/lib]$ cp utimecmp.c ~/old.c
+[huimin@lnxsrv09 ~/coreutils-with-bug/lib]$ cd ~
+[huimin@lnxsrv09 ~]$ ls
+0             assign2.html               datalab1-handout  nsdefault
+3132proj      automake-1.15              Desktop           old.c
+35            automake-1.15.tar.gz       Documents         perl5
+35LA1         bomblab                    Downloads         prac
+35LA2         coreutils-with-bug         hw2.c             WINDOWS
+35LA3         coreutils-with-bug.tar.gz  junk
+35LA4         cs31                       lab3
+assign1.html  datalab0-handout           lab4
+[huimin@lnxsrv09 ~]$ emacs old.c
+[huimin@lnxsrv09 ~]$ emacs new.c
+[huimin@lnxsrv09 ~]$ diff old.c new.c
+1c1
+< /* utimecmp.c -- compare file time stamps
+---
+> /* utimecmp.c -- compare file timestamps
+3c3
+<    Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+---
+>    Copyright (C) 2004-2007, 2009-2017 Free Software Foundation, Inc.
+5c5
+<    This program is free software; you can redistribute it and/or modify
+---
+>    This program is free software: you can redistribute it and/or modify
+7,8c7,8
+<    the Free Software Foundation; either version 2, or (at your option)
+<    any later version.
+---
+>    the Free Software Foundation; either version 3 of the License, or
+>    (at your option) any later version.
+16,17c16
+<    along with this program; if not, write to the Free Software Foundation,
+<    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+---
+>    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+21,23c20
+< #ifdef HAVE_CONFIG_H
+< # include <config.h>
+< #endif
+---
+> #include <config.h>
+27,33d23
+< #if HAVE_INTTYPES_H
+< # include <inttypes.h>
+< #endif
+< #if HAVE_STDINT_H
+< # include <stdint.h>
+< #endif
+< 
+35a26
+> #include <stdint.h>
+36a28,30
+> #include <time.h>
+> #include <unistd.h>
+> 
+40d33
+< #include "timespec.h"
+42,45c35
+< #include "xalloc.h"
+< 
+< /* Verify a requirement at compile-time (unlike assert, which is runtime).  */
+< #define verify(name, assertion) struct name { char a[(assertion) ? 1 : -1]; }
+---
+> #include "verify.h"
+51,55c41
+< #ifndef SIZE_MAX
+< # define SIZE_MAX ((size_t) -1)
+< #endif
+< 
+< enum { BILLION = 1000 * 1000 * 1000 };
+---
+> #define BILLION (1000 * 1000 * 1000)
+60,65c46,57
+< #if (HAVE_WORKING_UTIMES					\
+<      && (defined HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC		\
+< 	 || defined HAVE_STRUCT_STAT_ST_ATIMESPEC_TV_NSEC	\
+< 	 || defined HAVE_STRUCT_STAT_ST_ATIMENSEC		\
+< 	 || defined HAVE_STRUCT_STAT_ST_ATIM_ST__TIM_TV_NSEC	\
+< 	 || defined HAVE_STRUCT_STAT_ST_SPARE1))
+---
+> #if HAVE_UTIMENSAT
+> enum { SYSCALL_RESOLUTION = 1 };
+> #elif (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+> /* On native Windows, file times have 100 ns resolution. See
+>    <https://msdn.microsoft.com/en-us/library/ms724284.aspx>  */
+> enum { SYSCALL_RESOLUTION = 100 };
+> #elif ((HAVE_FUTIMESAT || HAVE_WORKING_UTIMES)                  \
+>        && (defined HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC             \
+>            || defined HAVE_STRUCT_STAT_ST_ATIMESPEC_TV_NSEC     \
+>            || defined HAVE_STRUCT_STAT_ST_ATIMENSEC             \
+>            || defined HAVE_STRUCT_STAT_ST_ATIM_ST__TIM_TV_NSEC  \
+>            || defined HAVE_STRUCT_STAT_ST_SPARE1))
+71c63
+< /* Describe a file system and its time stamp resolution in nanoseconds.  */
+---
+> /* Describe a file system and its timestamp resolution in nanoseconds.  */
+77c69
+<   /* An upper bound on the time stamp resolution of this file system,
+---
+>   /* An upper bound on the timestamp resolution of this file system,
+117a110,111
+>    DST_NAME may be NULL if OPTIONS is 0.
+> 
+121c115
+<    determined; this can happen only if the time stamps are very close and
+---
+>    determined; this can happen only if the timestamps are very close and
+123c117
+<    have permission to futz with the destination's time stamps).  */
+---
+>    have permission to futz with the destination's timestamps).  */
+127,129c121,123
+< 	  struct stat const *dst_stat,
+< 	  struct stat const *src_stat,
+< 	  int options)
+---
+>           struct stat const *dst_stat,
+>           struct stat const *src_stat,
+>           int options)
+134c128,130
+<      presence of signals, multiple threads, etc.
+---
+>      presence of signals, multiple threads, etc.  However, memory pressure
+>      that prevents use of the hash table is not fatal - we just fall back
+>      to redoing the computations on every call in that case.
+142,143c138
+<   verify (time_t_is_integer, TYPE_IS_INTEGER (time_t));
+<   verify (twos_complement_arithmetic, TYPE_TWOS_COMPLEMENT (int));
+---
+>   verify (TYPE_IS_INTEGER (time_t));
+145c140
+<   /* Destination and source time stamps.  */
+---
+>   /* Destination and source timestamps.  */
+153c148
+<       /* Look up the time stamp resolution for the destination device.  */
+---
+>       /* Look up the timestamp resolution for the destination device.  */
+155c150
+<       /* Hash table for devices.  */
+---
+>       /* Hash table for caching information learned about devices.  */
+160c155,156
+<       struct fs_res *dst_res;
+---
+>       struct fs_res *dst_res = NULL;
+>       struct fs_res tmp_dst_res;
+162c158
+<       /* Time stamp resolution in nanoseconds.  */
+---
+>       /* timestamp resolution in nanoseconds.  */
+164a161,172
+>       /* Quick exit, if possible.  Since the worst resolution is 2
+>          seconds, anything that differs by more than that does not
+>          needs source truncation.  */
+>       if (dst_s == src_s && dst_ns == src_ns)
+>         return 0;
+>       if (dst_s <= src_s - 2)
+>         return -1;
+>       if (src_s <= dst_s - 2)
+>         return 1;
+> 
+>       /* Try to do a hash lookup, but fall back to stack variables and
+>          recomputation on low memory situations.  */
+166,183c174,211
+< 	ht = hash_initialize (16, NULL, dev_info_hash, dev_info_compare, free);
+<       if (! new_dst_res)
+< 	{
+< 	  new_dst_res = xmalloc (sizeof *new_dst_res);
+< 	  new_dst_res->resolution = 2 * BILLION;
+< 	  new_dst_res->exact = false;
+< 	}
+<       new_dst_res->dev = dst_stat->st_dev;
+<       dst_res = hash_insert (ht, new_dst_res);
+<       if (! dst_res)
+< 	xalloc_die ();
+< 
+<       if (dst_res == new_dst_res)
+< 	{
+< 	  /* NEW_DST_RES is now in use in the hash table, so allocate a
+< 	     new entry next time.  */
+< 	  new_dst_res = NULL;
+< 	}
+---
+>         ht = hash_initialize (16, NULL, dev_info_hash, dev_info_compare, free);
+>       if (ht)
+>         {
+>           if (! new_dst_res)
+>             {
+>               new_dst_res = malloc (sizeof *new_dst_res);
+>               if (!new_dst_res)
+>                 goto low_memory;
+>               new_dst_res->resolution = 2 * BILLION;
+>               new_dst_res->exact = false;
+>             }
+>           new_dst_res->dev = dst_stat->st_dev;
+>           dst_res = hash_insert (ht, new_dst_res);
+>           if (! dst_res)
+>             goto low_memory;
+> 
+>           if (dst_res == new_dst_res)
+>             {
+>               /* NEW_DST_RES is now in use in the hash table, so allocate a
+>                  new entry next time.  */
+>               new_dst_res = NULL;
+>             }
+>         }
+>       else
+>         {
+>         low_memory:
+>           if (ht)
+>             {
+>               tmp_dst_res.dev = dst_stat->st_dev;
+>               dst_res = hash_lookup (ht, &tmp_dst_res);
+>             }
+>           if (!dst_res)
+>             {
+>               dst_res = &tmp_dst_res;
+>               dst_res->resolution = 2 * BILLION;
+>               dst_res->exact = false;
+>             }
+>         }
+186a215,227
+> #ifdef _PC_TIMESTAMP_RESOLUTION
+>       /* If the system will tell us the resolution, we're set!  */
+>       if (! dst_res->exact)
+>         {
+>           res = pathconf (dst_name, _PC_TIMESTAMP_RESOLUTION);
+>           if (0 < res)
+>             {
+>               dst_res->resolution = res;
+>               dst_res->exact = true;
+>             }
+>         }
+> #endif
+> 
+188,327c229,371
+< 	{
+< 	  /* This file system's resolution is not known exactly.
+< 	     Deduce it, and store the result in the hash table.  */
+< 
+< 	  time_t dst_a_s = dst_stat->st_atime;
+< 	  time_t dst_c_s = dst_stat->st_ctime;
+< 	  time_t dst_m_s = dst_s;
+< 	  int dst_a_ns = get_stat_atime_ns (dst_stat);
+< 	  int dst_c_ns = get_stat_ctime_ns (dst_stat);
+< 	  int dst_m_ns = dst_ns;
+< 
+< 	  /* Set RES to an upper bound on the file system resolution
+< 	     (after truncation due to SYSCALL_RESOLUTION) by inspecting
+< 	     the atime, ctime and mtime of the existing destination.
+< 	     We don't know of any file system that stores atime or
+< 	     ctime with a higher precision than mtime, so it's valid to
+< 	     look at them too.  */
+< 	  {
+< 	    bool odd_second = (dst_a_s | dst_c_s | dst_m_s) & 1;
+< 
+< 	    if (SYSCALL_RESOLUTION == BILLION)
+< 	      {
+< 		if (odd_second | dst_a_ns | dst_c_ns | dst_m_ns)
+< 		  res = BILLION;
+< 	      }
+< 	    else
+< 	      {
+< 		int a = dst_a_ns;
+< 		int c = dst_c_ns;
+< 		int m = dst_m_ns;
+< 
+< 		/* Write it this way to avoid mistaken GCC warning
+< 		   about integer overflow in constant expression.  */
+< 		int SR10 = SYSCALL_RESOLUTION;  SR10 *= 10;
+< 
+< 		if ((a % SR10 | c % SR10 | m % SR10) != 0)
+< 		  res = SYSCALL_RESOLUTION;
+< 		else
+< 		  for (res = SR10, a /= SR10, c /= SR10, m /= SR10;
+< 		       (res < dst_res->resolution
+< 			&& (a % 10 | c % 10 | m % 10) == 0);
+< 		       res *= 10, a /= 10, c /= 10, m /= 10)
+< 		    if (res == BILLION)
+< 		      {
+< 			if (! odd_second)
+< 			  res *= 2;
+< 			break;
+< 		      }
+< 	      }
+< 
+< 	    dst_res->resolution = res;
+< 	  }
+< 
+< 	  if (SYSCALL_RESOLUTION < res)
+< 	    {
+< 	      struct timespec timespec[2];
+< 	      struct stat dst_status;
+< 
+< 	      /* Ignore source time stamp information that must necessarily
+< 		 be lost when filtered through utimens.  */
+< 	      src_ns -= src_ns % SYSCALL_RESOLUTION;
+< 
+< 	      /* If the time stamps disagree widely enough, there's no need
+< 		 to interrogate the file system to deduce the exact time
+< 		 stamp resolution; return the answer directly.  */
+< 	      {
+< 		time_t s = src_s & ~ (res == 2 * BILLION);
+< 		if (src_s < dst_s || (src_s == dst_s && src_ns <= dst_ns))
+< 		  return 1;
+< 		if (dst_s < s
+< 		    || (dst_s == s && dst_ns < src_ns - src_ns % res))
+< 		  return -1;
+< 	      }
+< 
+< 	      /* Determine the actual time stamp resolution for the
+< 		 destination file system (after truncation due to
+< 		 SYSCALL_RESOLUTION) by setting the access time stamp of the
+< 		 destination to the existing access time, except with
+< 		 trailing nonzero digits.  */
+< 
+< 	      timespec[0].tv_sec = dst_a_s;
+< 	      timespec[0].tv_nsec = dst_a_ns;
+< 	      timespec[1].tv_sec = dst_m_s | (res == 2 * BILLION);
+< 	      timespec[1].tv_nsec = dst_m_ns + res / 9;
+< 
+< 	      /* Set the modification time.  But don't try to set the
+< 		 modification time of symbolic links; on many hosts this sets
+< 		 the time of the pointed-to file.  */
+< 	      if (S_ISLNK (dst_stat->st_mode)
+< 		  || utimens (dst_name, timespec) != 0)
+< 		return -2;
+< 
+< 	      /* Read the modification time that was set.  It's safe to call
+< 		 'stat' here instead of worrying about 'lstat'; either the
+< 		 caller used 'stat', or the caller used 'lstat' and found
+< 		 something other than a symbolic link.  */
+< 	      {
+< 		int stat_result = stat (dst_name, &dst_status);
+< 
+< 		if (stat_result
+< 		    | (dst_status.st_mtime ^ dst_m_s)
+< 		    | (get_stat_mtime_ns (&dst_status) ^ dst_m_ns))
+< 		  {
+< 		    /* The modification time changed, or we can't tell whether
+< 		       it changed.  Change it back as best we can.  */
+< 		    timespec[1].tv_sec = dst_m_s;
+< 		    timespec[1].tv_nsec = dst_m_ns;
+< 		    utimens (dst_name, timespec);
+< 		  }
+< 
+< 		if (stat_result != 0)
+< 		  return -2;
+< 	      }
+< 
+< 	      /* Determine the exact resolution from the modification time
+< 		 that was read back.  */
+< 	      {
+< 		int old_res = res;
+< 		int a = (BILLION * (dst_status.st_mtime & 1)
+< 			 + get_stat_mtime_ns (&dst_status));
+< 
+< 		res = SYSCALL_RESOLUTION;
+< 
+< 		for (a /= res; a % 10 != 0; a /= 10)
+< 		  {
+< 		    if (res == BILLION)
+< 		      {
+< 			res *= 2;
+< 			break;
+< 		      }
+< 		    res *= 10;
+< 		    if (res == old_res)
+< 		      break;
+< 		  }
+< 	      }
+< 	    }
+< 
+< 	  dst_res->resolution = res;
+< 	  dst_res->exact = true;
+< 	}
+---
+>         {
+>           /* This file system's resolution is not known exactly.
+>              Deduce it, and store the result in the hash table.  */
+> 
+>           time_t dst_a_s = dst_stat->st_atime;
+>           time_t dst_c_s = dst_stat->st_ctime;
+>           time_t dst_m_s = dst_s;
+>           int dst_a_ns = get_stat_atime_ns (dst_stat);
+>           int dst_c_ns = get_stat_ctime_ns (dst_stat);
+>           int dst_m_ns = dst_ns;
+> 
+>           /* Set RES to an upper bound on the file system resolution
+>              (after truncation due to SYSCALL_RESOLUTION) by inspecting
+>              the atime, ctime and mtime of the existing destination.
+>              We don't know of any file system that stores atime or
+>              ctime with a higher precision than mtime, so it's valid to
+>              look at them too.  */
+>           {
+>             bool odd_second = (dst_a_s | dst_c_s | dst_m_s) & 1;
+> 
+>             if (SYSCALL_RESOLUTION == BILLION)
+>               {
+>                 if (odd_second | dst_a_ns | dst_c_ns | dst_m_ns)
+>                   res = BILLION;
+>               }
+>             else
+>               {
+>                 int a = dst_a_ns;
+>                 int c = dst_c_ns;
+>                 int m = dst_m_ns;
+> 
+>                 /* Write it this way to avoid mistaken GCC warning
+>                    about integer overflow in constant expression.  */
+>                 int SR10 = SYSCALL_RESOLUTION;  SR10 *= 10;
+> 
+>                 if ((a % SR10 | c % SR10 | m % SR10) != 0)
+>                   res = SYSCALL_RESOLUTION;
+>                 else
+>                   for (res = SR10, a /= SR10, c /= SR10, m /= SR10;
+>                        (res < dst_res->resolution
+>                         && (a % 10 | c % 10 | m % 10) == 0);
+>                        res *= 10, a /= 10, c /= 10, m /= 10)
+>                     if (res == BILLION)
+>                       {
+>                         if (! odd_second)
+>                           res *= 2;
+>                         break;
+>                       }
+>               }
+> 
+>             dst_res->resolution = res;
+>           }
+> 
+>           if (SYSCALL_RESOLUTION < res)
+>             {
+>               struct timespec timespec[2];
+>               struct stat dst_status;
+> 
+>               /* Ignore source timestamp information that must necessarily
+>                  be lost when filtered through utimens.  */
+>               src_ns -= src_ns % SYSCALL_RESOLUTION;
+> 
+>               /* If the timestamps disagree widely enough, there's no need
+>                  to interrogate the file system to deduce the exact
+>                  timestamp resolution; return the answer directly.  */
+>               {
+>                 time_t s = src_s & ~ (res == 2 * BILLION ? 1 : 0);
+>                 if (src_s < dst_s || (src_s == dst_s && src_ns <= dst_ns))
+>                   return 1;
+>                 if (dst_s < s
+>                     || (dst_s == s && dst_ns < src_ns - src_ns % res))
+>                   return -1;
+>               }
+> 
+>               /* Determine the actual timestamp resolution for the
+>                  destination file system (after truncation due to
+>                  SYSCALL_RESOLUTION) by setting the access timestamp of the
+>                  destination to the existing access time, except with
+>                  trailing nonzero digits.  */
+> 
+>               timespec[0].tv_sec = dst_a_s;
+>               timespec[0].tv_nsec = dst_a_ns;
+>               timespec[1].tv_sec = dst_m_s | (res == 2 * BILLION);
+>               timespec[1].tv_nsec = dst_m_ns + res / 9;
+> 
+>               /* Set the modification time.  But don't try to set the
+>                  modification time of symbolic links; on many hosts this sets
+>                  the time of the pointed-to file.  */
+>               if ((S_ISLNK (dst_stat->st_mode)
+>                    ? lutimens (dst_name, timespec)
+>                    : utimens (dst_name, timespec)) != 0)
+>                 return -2;
+> 
+>               /* Read the modification time that was set.  */
+>               {
+>                 int stat_result = (S_ISLNK (dst_stat->st_mode)
+>                                    ? lstat (dst_name, &dst_status)
+>                                    : stat (dst_name, &dst_status));
+> 
+>                 if (stat_result
+>                     | (dst_status.st_mtime ^ dst_m_s)
+>                     | (get_stat_mtime_ns (&dst_status) ^ dst_m_ns))
+>                   {
+>                     /* The modification time changed, or we can't tell whether
+>                        it changed.  Change it back as best we can.  */
+>                     timespec[1].tv_sec = dst_m_s;
+>                     timespec[1].tv_nsec = dst_m_ns;
+>                     if (S_ISLNK (dst_stat->st_mode))
+>                       lutimens (dst_name, timespec);
+>                     else
+>                       utimens (dst_name, timespec);
+>                   }
+> 
+>                 if (stat_result != 0)
+>                   return -2;
+>               }
+> 
+>               /* Determine the exact resolution from the modification time
+>                  that was read back.  */
+>               {
+>                 int old_res = res;
+>                 int a = (BILLION * (dst_status.st_mtime & 1)
+>                          + get_stat_mtime_ns (&dst_status));
+> 
+>                 res = SYSCALL_RESOLUTION;
+> 
+>                 for (a /= res; a % 10 == 0; a /= 10)
+>                   {
+>                     if (res == BILLION)
+>                       {
+>                         res *= 2;
+>                         break;
+>                       }
+>                     res *= 10;
+>                     if (res == old_res)
+>                       break;
+>                   }
+>               }
+>             }
+> 
+>           dst_res->resolution = res;
+>           dst_res->exact = true;
+>         }
+329,330c373,374
+<       /* Truncate the source's time stamp according to the resolution.  */
+<       src_s &= ~ (res == 2 * BILLION);
+---
+>       /* Truncate the source's timestamp according to the resolution.  */
+>       src_s &= ~ (res == 2 * BILLION ? 1 : 0);
+334c378
+<   /* Compare the time stamps and return -1, 0, 1 accordingly.  */
+---
+>   /* Compare the timestamps and return -1, 0, 1 accordingly.  */
+336,338c380,382
+< 	  : dst_s > src_s ? 1
+< 	  : dst_ns < src_ns ? -1
+< 	  : dst_ns > src_ns);
+---
+>           : dst_s > src_s ? 1
+>           : dst_ns < src_ns ? -1
+>           : dst_ns > src_ns);
+[huimin@lnxsrv09 ~]$ diff old.c new.c > t.diff
+[huimin@lnxsrv09 ~]$ emacs t.diff 
+[huimin@lnxsrv09 ~]$ man diff
+[huimin@lnxsrv09 ~]$ diff -u old.c new.c > t.diff
+[huimin@lnxsrv09 ~]$ emacs t.diff 
+
+File Edit Options Buffers Tools Diff Help                                     
+--- old.c       2018-05-02 17:56:44.621464000 -0700                           
++++ new.c       2018-05-02 17:57:05.789390000 -0700                           
+@@ -1,11 +1,11 @@
+-/* utimecmp.c -- compare file time stamps                                    
++/* utimecmp.c -- compare file timestamps                                     
+                                                                              
+-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.                   
++   Copyright (C) 2004-2007, 2009-2017 Free Software Foundation, Inc.         
+                                                                              
+-   This program is free software; you can redistribute it and/or modify      
++   This program is free software: you can redistribute it and/or modify      
+    it under the terms of the GNU General Public License as published by      
+-   the Free Software Foundation; either version 2, or (at your option)       
+-   any later version.                                                        
++   the Free Software Foundation; either version 3 of the License, or         
++   (at your option) any later version.                                       
+                                                                              
+    This program is distributed in the hope that it will be useful,           
+    but WITHOUT ANY WARRANTY; without even the implied warranty of            
+@@ -13,68 +13,60 @@
+    GNU General Public License for more details.                              
+                                                                              
+    You should have received a copy of the GNU General Public License         
+-   along with this program; if not, write to the Free Software Foundation,   
+-   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */    
++   along with this program.  If not, see <https://www.gnu.org/licenses/>.  *\
+/                                                                             
+                                                                              
+ /* Written by Paul Eggert.  */                                               
+                                                                              
+-#ifdef HAVE_CONFIG_H                                                         
+-# include <config.h>                                                         
+-#endif                                                                       
++#include <config.h>                                                          
+                                                                              
+ #include "utimecmp.h"                                                        
+                                                                              
+-#if HAVE_INTTYPES_H                                                          
+-# include <inttypes.h>                                                       
+-#endif                                                                       
+-#if HAVE_STDINT_H                                                            
+-# include <stdint.h>                                                         
+-#endif                                                                       
+-                                                                             
+ #include <limits.h>                                                          
+ #include <stdbool.h>                                                         
++#include <stdint.h>                                                          
+ #include <stdlib.h>                                                          
++#include <time.h>                                                            
+-UU-:----F1  t.diff         Top L29    (Diff) --------------------------------
+

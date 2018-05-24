@@ -1,0 +1,404 @@
+1.
+man man
+man -k <word>
+
+2.
+whereis cp
+cp: /usr/bin/cp /usr/local/cs/bin/cp /usr/share/man/man1p/cp.1p.gz /usr/share/man/man1/cp.1.gz
+whereis sh
+sh: /usr/bin/sh /usr/share/man/man1p/sh.1p.gz /usr/share/man/man1/sh.1.gz
+
+3.
+man find
+find /usr/bin -name ? -executable
+
+/usr/bin/X
+/usr/bin/w
+/usr/bin/[
+
+whatis X
+X: nothing appropriate.
+whatis w
+w (1)                - Show who is logged on and what they are doing.
+whatis [
+[ (1)                - bash built-in commands, see bash(1)
+ 
+4.
+man -k symbolic
+readlink /usr/bin/emacs
+/etc/alternatives/emacs
+
+5.
+man -k version
+emacs --version
+/usr/bin/emacs --version
+ls /usr/local/cs/bin
+ls /usr/bin
+
+GNU Emacs 25.3.1
+Copyright (C) 2017 Free Software Foundation, Inc.
+GNU Emacs comes with ABSOLUTELY NO WARRANTY.
+You may redistribute copies of GNU Emacs
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING.
+
+GNU Emacs 24.3.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+GNU Emacs comes with ABSOLUTELY NO WARRANTY.
+You may redistribute copies of Emacs
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING.
+
+/usr/bin/emacs and emacs have different versions because the plain emacs
+is under the directory /usr/local/cs/bin, which has a version number of 25.3.
+On the other hand, emacs in the directory /usr/bin is version 24.3.
+
+6.
+man chmod
+g+s: The permission for other users in the file's group to set user or group ID on execution is added.
+o-x: The permission for other users not in the file's group to execute the file is removed.
+
+7.
+man find
+find /usr/local/cs -mtime -30
+
+8.
+which find
+/usr/bin/find
+
+man find
+find /usr/bin/find -type l
+find /usr/bin -type l
+
+/usr/bin/pmiostat   -->L73
+/usr/bin/xzfgrep
+/usr/bin/updmap
+/usr/bin/systemd-coredumpctl
+/usr/bin/rpmquery
+/usr/bin/links
+/usr/bin/rmic
+/usr/bin/jarsigner
+/usr/bin/parec
+/usr/bin/nc
+/usr/bin/inimf
+/usr/bin/gimp
+/usr/bin/pnmtofits
+/usr/bin/bunzip2
+/usr/bin/arecord
+/usr/bin/el5-rpmlint
+/usr/bin/ppmtouil
+/usr/bin/lastb
+/usr/bin/gnroff
+/usr/bin/unxz
+/usr/bin/systemd-loginctl
+/usr/bin/flex++
+/usr/bin/javadoc
+/usr/bin/paplay
+/usr/bin/pack200
+/usr/bin/slogin
+/usr/bin/python2-config
+/usr/bin/pnmtopnm
+/usr/bin/rpmverify
+/usr/bin/kdesu
+/usr/bin/dviluatex
+/usr/bin/jjs
+/usr/bin/X
+/usr/bin/javap
+/usr/bin/gnatgcc
+/usr/bin/gtroff
+/usr/bin/atq
+/usr/bin/jadetex
+/usr/bin/texhash
+/usr/bin/unix2mac
+/usr/bin/texluac
+/usr/bin/zsoelim
+/usr/bin/pstack
+/usr/bin/vimdiff
+/usr/bin/tclsh
+/usr/bin/psfaddtable
+/usr/bin/servertool
+/usr/bin/gemtopbm
+/usr/bin/ebb
+/usr/bin/psfgettable
+/usr/bin/bzcat
+/usr/bin/pnmcomp
+/usr/bin/sgmlnorm
+/usr/bin/pdfetex
+/usr/bin/appletviewer
+/usr/bin/spent
+/usr/bin/el4-rpmlint
+/usr/bin/gimp-console
+/usr/bin/pnmenlarge
+/usr/bin/dvi2fax
+/usr/bin/wish
+/usr/bin/combinediff
+/usr/bin/kpsepath
+/usr/bin/flipdiff
+/usr/bin/jstat
+/usr/bin/htmex
+/usr/bin/apropos
+/usr/bin/latrace-ctl
+/usr/bin/pnmtotiff
+/usr/bin/icontopbm
+/usr/bin/byacc
+/usr/bin/passwd
+/usr/bin/httex
+/usr/bin/rvi
+/usr/bin/htcontext
+/usr/bin/jmap
+/usr/bin/db2rtf
+/usr/bin/nisdomainname
+/usr/bin/gpgv
+/usr/bin/pdflatex
+/usr/bin/linux32
+/usr/bin/schemagen
+/usr/bin/psfstriptable
+/usr/bin/rksh
+/usr/bin/dvired
+/usr/bin/ppmquantall
+/usr/bin/mail
+/usr/bin/mac2unix
+/usr/bin/dvipdfm
+/usr/bin/Mail
+/usr/bin/pdfxmltex
+/usr/bin/pdfjadetex
+/usr/bin/pnmdepth
+/usr/bin/fmtutil
+/usr/bin/rnano
+/usr/bin/parecord
+/usr/bin/rhn_register
+/usr/bin/xzcmp
+/usr/bin/gnome-keyring
+/usr/bin/allneeded
+/usr/bin/bzless
+/usr/bin/db2ps
+/usr/bin/ksh
+/usr/bin/mptopdf
+/usr/bin/pnmscale
+/usr/bin/db2dvi
+/usr/bin/fmtutil-sys
+/usr/bin/open
+/usr/bin/latex
+/usr/bin/jps
+/usr/bin/setup-nsssysinit
+/usr/bin/lex
+/usr/bin/pmatop
+/usr/bin/lp
+/usr/bin/ht
+/usr/bin/texlua
+/usr/bin/pnmnoraw
+/usr/bin/kpsexpand
+/usr/bin/bashbug
+/usr/bin/sh
+/usr/bin/pgmedge
+/usr/bin/phar
+/usr/bin/extractbb
+/usr/bin/traceroute6
+/usr/bin/ypdomainname
+/usr/bin/grepdiff
+/usr/bin/jstatd
+/usr/bin/htxelatex
+/usr/bin/newaliases.postfix
+/usr/bin/i386
+/usr/bin/dvigif
+/usr/bin/pnmarith
+/usr/bin/xzcat
+/usr/bin/rmiregistry
+/usr/bin/pstree.x11
+/usr/bin/python2
+/usr/bin/dvdrecord
+/usr/bin/kpsewhere
+/usr/bin/newaliases
+/usr/bin/sgml2xml
+/usr/bin/pgmnorm
+/usr/bin/mktexfmt
+/usr/bin/python
+/usr/bin/etags
+/usr/bin/linux64
+/usr/bin/pax
+/usr/bin/unpack200
+/usr/bin/iptables-xml
+/usr/bin/nmtui-edit
+/usr/bin/ppmtojpeg
+/usr/bin/dvilualatex
+/usr/bin/setup
+/usr/bin/gsoelim
+/usr/bin/cdrecord
+/usr/bin/reset
+/usr/bin/jar
+/usr/bin/ping6
+/usr/bin/htxetex
+/usr/bin/texconfig-sys
+/usr/bin/cancel
+/usr/bin/jade
+/usr/bin/jstack
+/usr/bin/nail
+/usr/bin/orbd
+/usr/bin/nmtui-connect
+/usr/bin/db2pdf
+/usr/bin/texconfig
+/usr/bin/wsgen
+/usr/bin/pgmoil
+/usr/bin/updmap-sys
+/usr/bin/pbmtoicon
+/usr/bin/emacs
+/usr/bin/lpr
+/usr/bin/xmltex
+/usr/bin/pngtopnm
+/usr/bin/allcm
+/usr/bin/desktop-file-edit
+/usr/bin/jrunscript
+/usr/bin/mkisofs
+/usr/bin/pmevent
+/usr/bin/allec
+/usr/bin/jhat
+/usr/bin/cc
+/usr/bin/xjc
+/usr/bin/atrm
+/usr/bin/etex
+/usr/bin/spam
+/usr/bin/htlatex
+/usr/bin/awk
+/usr/bin/lpstat
+/usr/bin/ghostscript
+/usr/bin/rmid
+/usr/bin/rmail
+/usr/bin/ex
+/usr/bin/lsdiff
+/usr/bin/jconsole
+/usr/bin/texlinks
+/usr/bin/csh
+/usr/bin/domainname
+/usr/bin/hwloc-ls
+/usr/bin/rview
+/usr/bin/gpic
+/usr/bin/lprm
+/usr/bin/subscription-manager
+/usr/bin/extcheck
+/usr/bin/x86_64
+/usr/bin/sg
+/usr/bin/pnmfile
+/usr/bin/pnminterp
+/usr/bin/lualatex
+/usr/bin/mk4ht
+/usr/bin/f95
+/usr/bin/mkluatexfontdb
+/usr/bin/mkhybrid
+/usr/bin/gneqn
+/usr/bin/initex
+/usr/bin/mysql_config
+/usr/bin/serialver
+/usr/bin/gpg
+/usr/bin/keytool
+/usr/bin/jdb
+/usr/bin/captoinfo
+/usr/bin/policytool
+/usr/bin/thumbpdf
+/usr/bin/pmcollectl
+/usr/bin/java
+/usr/bin/f2py.numpy
+/usr/bin/native2ascii
+/usr/bin/gtar
+/usr/bin/ld
+/usr/bin/pnmsplit
+/usr/bin/kpsetool
+/usr/bin/dnsdomainname
+/usr/bin/bzcmp
+/usr/bin/jsadebugd
+/usr/bin/javaws
+/usr/bin/infotocap
+/usr/bin/simpdftex
+/usr/bin/nmtui-hostname
+/usr/bin/gtbl
+/usr/bin/xzegrep
+/usr/bin/view
+/usr/bin/rvim
+/usr/bin/python-config
+/usr/bin/makeinfo
+/usr/bin/jinfo
+/usr/bin/nsgmls
+/usr/bin/jdeps
+/usr/bin/readcd
+/usr/bin/nfs4_editfacl
+/usr/bin/javac
+/usr/bin/pgmslice
+/usr/bin/httexi
+/usr/bin/gjs
+/usr/bin/bmptoppm
+/usr/bin/tnameserv
+/usr/bin/pamon
+/usr/bin/wsimport
+/usr/bin/mailq
+/usr/bin/texconfig-dialog
+/usr/bin/libpng-config
+/usr/bin/gmake
+/usr/bin/javah
+/usr/bin/lpq
+/usr/bin/idlj
+/usr/bin/chsh
+/usr/bin/jcmd
+/usr/bin/pnmcut
+/usr/bin/geqn
+/usr/bin/ppmnorm
+/usr/bin/mailq.postfix    -->L343
+Total: 271 symbolic links
+
+9.
+cd /usr/lib64
+ls -lt
+-rwxr-xr-x.   1 root root       19408 Dec 28  2013 librom1394.so.0.3.0
+ls /usr/lib64 -ln -a
+dr-xr-xr-x. 151 0  0   135168 Mar 28 13:38 .
+drwxr-xr-x.  15 0  0     4096 Nov 18  2016 ..
+
+10.
+man locale
+locale -a
+locale -a -v
+Locale gets its data from /usr/lib/locale/locale-archive and /usr/share/i18n/locales.
+
+11.
+C-h r C-s c o m m a n d C-s C-s C-s C-s C-s C-s C-s C-s C-s C-s C-s C-s C-s Enter Enter C-s d o w n c a s e C-s C-s
+
+dired-downcase:                        Transforming File Names.
+downcase-region:                       Case.
+downcase-word:                         Case.
+
+12.
+C-h r C-s K E Y C-s C-s C-s C-s C-s C-s Enter Enter C-s C - M - r
+* C-M-r:                                 Regexp Search.
+* C-M-r (Rmail):                         Rmail Make Summary.
+* C-M-s:                                 Regexp Search.
+* C-M-s (Rmail):                         Rmail Make Summary.
+* C-M-<SPC>:                             Expressions.
+* C-M-t:                                 Expressions.
+* C-M-t (Rmail):                         Rmail Make Summary.
+* C-M-u:                                 Moving by Parens.
+* C-M-u (Dired):                         Subdirectory Motion.
+* C-M-v:                                 Other Window.
+
+13.
+C-h r C-s K E Y C-s C-s C-s C-s C-s C-s Enter Enter C-s C - g Enter Enter
+
+C-g: Quitting a partially typed command or safely stoppping the running command.
+Type C-g twice to exit an incremental search.
+
+14.
+C-h r C-s y a n k C-s Enter Enter
+
+"Yanking" means reinserting text previously killed.  The usual way to
+move or copy text is to kill it and then yank it elsewhere. Yanking behaves like cutting and pasting.
+
+15.
+ls /usr/bin -l > d.txt
+emacs
+C-x d Backspace Backspace / u s r / b i n C-x C-w Backspace Backspace Backspace Backspace Backspace Backspace Backspace Backspace ~ / d 2 . t x t C-x C-c
+ls
+diff -w d.txt d2.txt
+1c1,4
+< total 328712
+---
+>   /usr/bin:
+>   total used in directory 328792 available 13033700
+>   dr-xr-xr-x.   2 root root       73728 Mar 28 13:40 .
+>   drwxr-xr-x.  15 root root        4096 Nov 18  2016 ..

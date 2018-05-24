@@ -1,0 +1,18 @@
+#!/bin/sh
+# sfrob
+
+export LC_ALL='C'
+
+arg=${1:-default}
+
+encrypt=$(awk 'BEGIN { for (i = 0; i <= 255; i++) printf "\\%o", i }')
+
+decrypt=$(awk 'BEGIN { for (i = 0; i <= 255; i++) printf "\\%o", xor(i, 42) }')
+
+if [ "$arg" = "default" ]
+then
+    cat | tr "$encrypt" "$decrypt" | sort | tr "$decrypt" "$encrypt"
+elif [ "$arg" = "-f" ]
+then
+    cat | tr "$encrypt" "$decrypt" | sort --ignore-case | tr "$decrypt" "$encrypt"
+fi

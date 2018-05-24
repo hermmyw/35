@@ -1,0 +1,91 @@
+sfrob.txt
+
+1. Measure any differences in performance between sfrob and sfrobu using the time command: 
+	$ printf "a b c d A B C D" > foo.txt
+	$ time ./sfrob < foo.txt
+	b c a d B C A D 
+	real	0m0.003s
+	user	0m0.002s
+	sys	0m0.000s
+	$ time ./sfrobu < foo.txt
+	b c a d B C A D 
+	real	0m0.051s
+	user	0m0.000s
+	sys	0m0.005s
+	$ time ./sfrobu -f < foo.txt
+	b B c C a A d D 
+	real	0m0.062s
+	user	0m0.000s
+	sys	0m0.005s
+sfrobu takes longer time to execute because of privilege switch. When looking at sys time, I notice that sfrobu -f and sfrobu take longer than sfrobu. 
+Using system calls require the processor to switch from the user process to the kernel process and return back to the user process. Therefore, system 
+calls enter the supervisor space multiple times during the execution and slow down the execution time. 
+
+
+2. Estimate the number of comparisons as a function of the number of input lines:
+	I created 10 text files, each with 2, 4, 8, ... , 1024 words. I tested sfrob and sfrobu on these 10 text files. Instead of the sorted input words, 
+	I made the programs print 'Enter frobcmp' every time it enters frobcmp() and count the number of lines in the output file to find out how many 
+	comparisons are called.
+	Here are the results:
+
+	#words	#comparisons(same for sfrob and sfrobu)
+	2		1
+	4		5
+	8		16
+	16		44
+	32		112
+	64		272
+	128		640
+	256		1472
+	512		3328
+	1024	7424
+
+	#comparisons as a function of input lines:
+	C(n) = 2.4*n*log(n)
+
+Use the time command to compare the overall performance of sfrob, sfrobu, sfrobs, sfrobu -f, and sfrobs -f:
+I used output.txt, which is a 5MB file to test the performance of these programs:
+1)sfrob
+$ time ./sfrob < output.txt > o.txt
+
+real	0m0.865s
+user	0m0.390s
+sys	0m0.041s
+
+
+2)sfrobu
+$ time ./sfrobu < output.txt > osu.txt
+
+real	0m12.108s
+user	0m1.362s
+sys	0m10.679s
+
+
+3)sfrobs
+$ time ./sfrobs < output.txt > o.txt
+
+real	0m0.084s
+user	0m0.028s
+sys	0m0.027s
+
+
+4)sfrobu -f
+$ time ./sfrobu -f < output.txt > o.txt
+
+real	0m10.620s
+user	0m1.305s
+sys	0m9.271s
+
+
+5)sfrobs -f
+$ time ./sfrobs -f < output.txt > o.txt
+
+real	0m0.078s
+user	0m0.027s
+sys	0m0.026s
+
+
+sfrobu and sfrobu -f take significantly longer to execute. sfrobs and sfrobs -f have the fastest performance. sfrobu takes longer time to execute because 
+of privilege switch. When looking at sys time, I notice that sfrobu -f and sfrobu take longer than sfrobu. Using system calls require the processor to 
+switch from the user process to the kernel process and return back to the user process. Therefore, system calls enter the supervisor space multiple times 
+during the execution and slow down the execution time. 

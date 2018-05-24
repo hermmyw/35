@@ -1,0 +1,142 @@
+log.txt
+--------------------------------------------------------------------
+0. Reset
+Following the instructions on http://wiki.seeedstudio.com/BeagleBone_Green/#update-to-latest-software
+Note: need to write the image to eMMC.
+
+1. SSH to BB
+$ sudo ssh root@192.168.7.2
+	It gives WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!
+$ ssh-keygen -R 192.168.7.2
+	Since I did an SSH before I flashed my BB, the host key is already stored in 192.168.7.2.
+	Remove the old host key.
+$ sudo ssh root@192.168.7.2
+The authenticity of host '192.168.7.2 (192.168.7.2)' can't be established.
+ECDSA key fingerprint is SHA256:ISDEBaM6TF5wRsS4IGgXVANVAABvjfpQhadBS4y/jbA.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.7.2' (ECDSA) to the list of known hosts.
+Debian GNU/Linux 8
+
+Warning: Permanently added '192.168.7.2' (ECDSA) to the list of known hosts.
+Debian GNU/Linux 8
+
+BeagleBoard.org Debian Image 2018-02-01
+
+Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
+
+default username:password is [debian:temppwd]
+
+root@192.168.7.2's password: 
+Permission denied, please try again.
+
+$ sudo ssh -X debian@192.168.7.2
+	Since I could not figure out the password for root, I decide to log in as debian, which is also a sudo user.
+$ sudo -i
+[sudo] password for debian: temppwd
+	From debian, I upgrade to root privilege.
+
+
+2. Connect to wifi
+$ sudo connmanctl
+Error getting VPN connections: The name net.connman.vpn was not provided by any
+connmanctl> scan wifi
+Scan completed for wifi
+connmanctl> services
+connmanctl> agent on
+connmanctl> connect wifi_2cf7f1065444_4352333736302d77696669_managed_psk
+Connected wifi_2cf7f1065444_4352333736302d77696669_managed_psk
+connmanctl> quit
+
+3. Install updates and other packages
+$ sudo apt-get update
+$ sudo apt-get install xauth
+$ sudo apt-get install xvfb
+$ sudo apt-get install firefox-esr-l10n-en-gb
+$ sudo apt-get install xterm
+
+3. Build lab environment
+$ dpkg --get-selections | grep openssh
+openssh-client					install
+openssh-server					install
+openssh-sftp-server				install
+$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa
+Created directory '/root/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+d7:f6:b2:f0:b7:58:16:2d:ec:0c:1f:5a:5a:ca:d6:4d root@beaglebone
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|                 |
+|                 |
+|           . . . |
+|        S . + B E|
+|         . o & * |
+|          . B O .|
+|           + *.  |
+|            +... |
++-----------------+
+
+$ vim /etc/ssh/ssh_config
+$ vim /etc/ssh/sshd_config
+	Change X11Forwarding to yes.
+
+4. I am the server
+Add my partner as an user:
+	$ sudo useradd -d /home/jhshen -m jhshen
+	$ sudo passwd jhshen
+	Enter new UNIX password: 12345678
+	Retype new UNIX password: 12345678
+	passwd: password updated successfully
+Set up jhshen's account:
+	$ cd /home/jhshen
+	$ sudo mkdir .ssh
+	$ sudo chown -R jhshen .ssh
+	$ sudo chmod 700 .ssh
+	$ vim /etc/ssh/sshd_config
+
+$ ifconfig
+My IP address: 10.97.85.88
+
+
+5. I am the client
+$ ssh-copy-id -i hermmy@10.97.85.84
+The authenticity of host '10.97.85.84 (10.97.85.84)' can't be established.
+ECDSA key fingerprint is ba:e8:55:7a:10:00:d4:0d:bc:d0:72:74:ee:2a:a2:c8.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+Debian GNU/Linux 8
+
+BeagleBoard.org Debian Image 2016-06-14
+
+Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
+
+default username:password is [debian:temppwd]
+
+hermmy@10.97.85.84's password: 123456
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'hermmy@10.97.85.84'"
+and check to make sure that only the key(s) you wanted were added.
+
+$ ssh-add
+Could not open a connection to your authentication agent.
+
+$ ssh -X hermmy@10.97.85.84
+Debian GNU/Linux 8
+
+BeagleBoard.org Debian Image 2016-06-14
+
+Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
+
+default username:password is [debian:temppwd]
+
+Enter passphrase for key '/root/.ssh/id_rsa': 12345678
+Warning: No xauth data; using fake authentication data for X11 forwarding.

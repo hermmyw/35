@@ -1,0 +1,47 @@
+lab.txt
+1. Use the strace command to compare the system calls issued by your tr2b and tr2u commands (a) when copying one file to another, and 
+(b) when copying a file to your terminal. Use a file that contains at least 5,000,000 bytes.
+	Output.txt is a 5MB file:
+	$ head --bytes=5000000 /dev/urandom > output.txt
+
+	tr2b(a):
+	$ strace -o strace_output ./tr2b 'AB' 'XY' < output.txt > o1.txt
+	$ cat strace_output | wc -l
+	1252
+
+	tr2b(b):
+	$ strace -o strace_output ./tr2b 'AB' 'XY' < output.txt
+	$ cat strace_output | wc -l
+	20553
+
+	tr2u(a):
+	$ strace -o strace_output2 ./tr2u 'AB' 'XY' < output.txt > o2.txt
+	$ cat strace_output2 | wc -l
+	10000026
+
+	tr2u(b):
+	$ strace -o strace_output2 ./tr2u 'AB' 'XY' < output.txt
+	$ cat strace_output2 | wc -l
+	10000026
+
+Copying one file to another takes longer than copying a file to the terminal. One possible reason for this is that strace might not track 
+the processes of writing to a separate file after stdout, while it tracks writing to the terminal. tr2u is slower than tr2b. Approximately, 
+tr2u performs one system call for each byte. The privilege switch for each read() and write() causes tr2u to run slower and perfomr more 
+system calls than tr2b.
+
+2. Use the time command to measure how much faster one program is, compared to the other, when copying the same amount of data.
+	$ time ./tr2b 'AB' 'XY' < output.txt > o3.txt
+
+	real	0m0.328s
+	user	0m0.219s
+	sys		0m0.003s
+
+	$ time ./tr2u 'AB' 'XY' < output.txt > o4.txt
+
+	real	0m13.205s
+	user	0m1.505s
+	sys		0m11.589s
+
+tr2u takes longer time than tr2b because tr2u uses system calls, which cause a switch from user mode to kernel mode. System calls like read() 
+and write() cause a trap to interrupt the user process and the kernel takes control of the processor. Then the kernel executes the system 
+call and returns the processor to the user process. Therefore, system calls are expensive to use due to the privilege switch. 
