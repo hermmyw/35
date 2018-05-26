@@ -1,0 +1,17 @@
+log
+$ gpg --gen-key (choose default)
+Real Name: Hermmy Wang
+Email Address: hermmyw@hotmail.com
+Passphrase: 12345678
+$ cd /sys/bus/i2c/devices/0-0050
+$ cp eeprom ~/eeprom
+Export eeprom to my computer by Cyberduck
+$ gpg --armor --output eeprom.sig --detach-sign eeprom
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+pub   2048R/39832BF7 2018-05-25
+      Key fingerprint = 60F0 55BF B9AE D1DE C428  A066 D532 B91E 3983 2BF7
+uid                  Hermmy Wang <hermmyw@hotmail.com>
+sub   2048R/1EE2178D 2018-05-25
