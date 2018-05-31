@@ -1,0 +1,9 @@
+hw.txt
+$ wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/dlskeleton.tgz
+$ tar -xvf dlskeleton.tgz 
+$
+
+
+
+RTLD_LAZY: evaluate when needed
+RTLD_NOW

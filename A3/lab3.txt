@@ -17,7 +17,7 @@ Primary key fingerprint: 6C37 DC12 121A 5006 BC1D  B804 DF6F D971 3060 37D9
 
 The command outputs a warning which states that the signature is not trusted. It happens because I did not use my private key to sign the public key. 
 
-$ tar xvf coreutils-8.29.tar.xz
+$ tar -xvf coreutils-8.29.tar.xz
 Unzip coreutils-8.29
 
 
