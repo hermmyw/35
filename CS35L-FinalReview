@@ -1,0 +1,34 @@
+CS35L-FinalReview
+===============================================================================
+Conceptual MC
+No emacs/vim
+Code writing in several languages
+Only on slides
+
+Linux/GNU
+	Kernel
+		Scheduling, between software and hardware
+	Shell
+		Interface between user and kernel
+	Programs
+File/process:
+	process: executing programs
+	file: collection of data
+Basic commands:
+	which: which process are you on
+	kill: kill a process
+Absolute vs Relative path
+
+
+Regular expression
+
+*Implementing versions of tr, compare to the original?
+
+grep, sed
+
+Python
+	Classes and member functions
+	Writing python code
+	Argparse library
+
+C language

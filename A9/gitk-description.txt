@@ -1,0 +1,11 @@
+gitk-description.txt
+
+On the upper-left part of the page, we see a tree structure with master and 
+many branches. Each branch is followed by a commit message. This part 
+shows all the commits made to the repository, with the most recent ones on  
+the top.
+On the right, there is a list of committers with their email addresses and 
+commit times.
+The lower-left part of the page shows the change log and the diff file 
+showing anys changes to the repository. 
+The lower-right part shows the list of files impacted by the commit. 

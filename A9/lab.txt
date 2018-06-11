@@ -1,0 +1,167 @@
+lab9.txt
+1. Get a copy of the Diffutils repository from the file ~eggert/src/gnu/diffutils:
+$ git clone ~eggert/src/gnu/diffutils
+
+2. Get git log and tags:
+$ cd diffutils
+$ git log > ~/git-log.txt
+$ git tag > ~/git-tags.txt
+
+Find the commit entitled “maint: quote 'like this' or "like this", not 
+`like this'”, and generate a patch for that commit, putting it into the 
+file quote-patch.txt.
+$ emacs ~/git-log.txt
+C-s maint: quote 'like this'
+<copy the ID> 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+$ git format-patch -1 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f --stdout >
+ quote-patch.txt
+
+3. Check out version 3.0 of Diffutils from your repository.
+Use the patch command to apply quote-patch.txt to version 3.0. In some 
+cases it will not be able to figure out what file to patch; skip past 
+those by typing RETURN. Record any problems you had in applying the patch.
+Use the git status command to get an overview of what happened.
+$ git checkout v3.0
+HEAD is now at 022cd5c... version 3.0
+$ patch -p1 quote-patch.txt
+skipped all patches with problems three times
+
+$ git status
+HEAD detached at v3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   NEWS
+	modified:   README
+	modified:   TODO
+	modified:   doc/diagmeet.note
+	modified:   ms/config.bat
+	modified:   ms/config.site
+	modified:   po/en.po
+	modified:   src/analyze.c
+	modified:   src/cmp.c
+	modified:   src/context.c
+	modified:   src/diff.c
+	modified:   src/diff.h
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/ifdef.c
+	modified:   src/io.c
+	modified:   src/sdiff.c
+	modified:   src/side.c
+	modified:   src/system.h
+	modified:   src/util.c
+	modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	NEWS.orig
+	README-hacking.orig
+	README-hacking.rej
+	README.orig
+	README.rej
+	cfg.mk.orig
+	cfg.mk.rej
+	ms/config.site.orig
+	quote-patch.txt
+	src/cmp.c.orig
+	src/context.c.orig
+	src/diff.c.orig
+	src/diff.c.rej
+	src/diff.h.orig
+	src/diff3.c.orig
+	src/diff3.c.rej
+	src/dir.c.orig
+	src/sdiff.c.orig
+	src/system.h.orig
+	src/util.c.orig
+	tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+4. In Emacs, use vc-diff (C-x v =) and vc-revert (C-x v u) to revert 
+changes to files other than .c files. They are:
+NEWS
+README
+TODO
+doc/diagmeet.note
+ms/config.bat
+ms/config.site
+po/en.po
+src/diff.h
+src/system.h
+tests/help-version
+
+By opening these files with emacs, I first do (C-x v =), and then (C-x v
+ u).
+
+5. Also, and don't forget this part, undo all the changes to .c files other than changes to character string constants, as the character-string changes are the only changes that you want; this may require editing some files by hand.
+src/analyze.c ->all
+src/cmp.c ->3
+src/context.c ->all
+src/diff.c ->4
+src/diff3.c ->3
+src/dir.c
+src/ifdef.c ->all
+src/io.c ->all
+src/sdiff.c ->3
+src/side.c ->all
+src/util.c
+
+I open these .c files with emacs and do (C-x v =) to examine *vc-diff*. I find that need to revert all the changes to comments. I use (C-x o) to switch to the other window, and revert the changes by hand.
+
+6. Use Emacs to examine the files src/*.c.rej carefully, and copy rejected patches into the corresponding .c files as needed.
+In diff.c.rej and diff3.c.rej, I find that I need to change all ` to ' by hand.
+
+7. Remove all untracked files
+$ git clean -f
+
+8. When you’re done with the above, git status should report a half-dozen modified files, and git diff should output a patch that is three or four hundred lines long. Put that patch into a file quote-3.0-patch.txt.
+$ git status
+HEAD detached at v3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   src/cmp.c
+	modified:   src/diff.c
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/sdiff.c
+	modified:   src/util.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git diff > quote-3.0-patch.txt
+The file contains 327 lines.
+
+9. Build the resulting modified version of Diffutils, using the commands described in the file README-hacking
+./bootstrap
+./configure
+make
+make check
+
+10. Verify that Diffutils does the right thing with the “diff . -” scenario, as well as with “diff --help”.
+$ diff . -
+./src/diff: cannot compare '-' to a directory
+$ diff --help
+	All the apostrophes are correct.
+
+11. Do a sanity test using the modified version of Diffutils that you just built
+$ mkdir diffutils-3.0
+$ mkdir diffutils-3.0-patch
+$ mkdir diffutils-old
+$ git clone ~eggert/src/gnu/diffutils diffutils-old
+$ cd diffutils-old
+$ git checkout v3.0
+$ cd
+$ cp diffutils-old/src/*.c diffutils-3.0
+$ cp diffutils/src/*.c diffutils-3.0-patch
+$ diffutils/src/diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt
+
+12. Use diff to compare the contents of quote-3.0-test.txt and quote-3.0-patch.txt. Are the files identical? If not, are the differences innocuous?
+$ diff -u quote-3.0-test.txt diffutils/quote-3.0-patch.txt
+	The differences are mainly file paths, the positions of diff3.c are different in two patches. The actual contents are not different, therefore the differences are innocuous.
+
