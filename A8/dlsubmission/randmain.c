@@ -81,28 +81,6 @@ main (int argc, char **argv)
   }
 
   
-  /* Now that we know we have work to do, arrange to use the
-     appropriate library.  
-  void (*initialize) (void);
-  unsigned long long (*rand64) (void);
-  void (*finalize) (void);
-  if (rdrand_supported ())
-    {
-      initialize = hardware_rand64_init;
-      rand64 = hardware_rand64;
-      finalize = hardware_rand64_fini;
-    }
-  else
-    {
-      initialize = software_rand64_init;
-      rand64 = software_rand64;
-      finalize = software_rand64_fini;
-    }
-
-  initialize ();
-  */
-
-  
   int wordsize = sizeof rand64 ();
   int output_errno = 0;
 
@@ -126,11 +104,9 @@ main (int argc, char **argv)
     {
       errno = output_errno;
       perror ("output");
-      //finalize ();
       return 1;
     }
 
-  //finalize ();
   dlclose(dl_handle);
   return 0;
 }

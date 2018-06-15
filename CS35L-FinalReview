@@ -1,34 +1,1906 @@
 CS35L-FinalReview
 ===============================================================================
-Conceptual MC
-No emacs/vim
-Code writing in several languages
-Only on slides
+Code: C, Python, Bash
+Man page: sed, tr, grep, kill, find, sort, comm, diff, od, strace
+Git commands
 
-Linux/GNU
-	Kernel
-		Scheduling, between software and hardware
-	Shell
-		Interface between user and kernel
-	Programs
-File/process:
-	process: executing programs
-	file: collection of data
-Basic commands:
-	which: which process are you on
-	kill: kill a process
-Absolute vs Relative path
+Assignment 1
+-Basic commands
+	pwd： print working directory
+	rmdir: remove a directory
+  mv: move/rename a file(no undo)
+	ln: create a link
+  ls -d: list only directories
+	touch: update access & modification time to current time/create a file
+	find:
+    type, perm(permission), name, prune(don't descend)
+    $ find -perm -g=w -> match all files with g=w
+    $ find -perm g=w -> match files with only g=w
+    $ find -perm /g=w, u=w -> if no perm bits are set, -000
+	which: shows the full path of shell commands
+	ps: report a snapshot of current process
+	kill: terminate a process
+    $ kill [-s signal|-p] [--] pid...
+    $ kill -l [signal]
+    $ kill -s SIGHUP 24837
+
+Shell
+-How do i find where files are on the system?
+  $ whereis
+    locate the binary, source, and manual page files for a command
+  $ which
+-How do i find out what options are available for an utility?
+  $ man
+-When is a file a file and when is it a process?
+-What types of links are there?
+  Hard links: points to physical data
+  Symbolic links: points to a file
+What are the differences between absolute and relative paths?
+  Absolute path = pwd + relative path
+Why do we have permissions?
+  filetype user group other
+           rwx   rwx   rwx
+
+Assignment 2
+What else does the locale affect? sort
+Why do we have environment variables? What functions do they serve?
+  Environment variables help programs know what directory to install files in, where to store temporary files, and where to find user profile settings. They help shape the environment in which programs run on your computer.
+
+When do we use a compiled language/interpreted language?
+Touted benefits of interpreters:
+  No compilation means the time from editing code to testing the app can be diminished
+  No need to generate binaries for multiple architectures because the interpreter will manage the architecture abstraction (though you may need to still worry about the scripts handling integer sizes correctly, just not the binary distribution)
+Touted benefits of compilers:
+  Compiled native code does not have the overhead of an interpreter and is therefore usually more efficient on time and space
+  Interoperability is usually better, the only way for in-proc interoperation with scripts is via an interpreter rather than a standard FFI
+  Ability to support architectures the interpreter hasn't been compiled for (such as embedded systems)
+
+Why to redirect I/O? What are some examples of use cases for I/O redirection? How do we implement I/O redirection in C?
+
+Why do regular expressions exist no just program  our own text searching? Are the expressions the same across languages, platforms?
+Available across so many languages that most developers will learn them sooner or later.
+
+How do I write a regular expression to accomplish x?
+
+Quantification
+	How many times of previous expressions?
+Grouping
+	Which subset of previous expressions?
+Alternation
+	Which choices?
+Anchors
+	Where?
+
+How to combine the above to accomplish tasks?
+
+Practice!
+Use egrep
+$ egrep [^a-z]{7}   -> seven characters not in lower case
+What are the differences between tr, sed, and grep?
+tr command Translate, squeeze, delete characters from standard input, writing to standard output. on the other hand sed is a stream editor or it is used to perform basic text transformations on an input stream. tr perform character based transformation but sed perform string based transformation. grep can only shows the lines matching pattern. You can not transform the output. sed command is super set of grep, tr and cut command. Additionally it can transform output. sed is mainly used for extraction and substitution.
+
+Assignment 3
+Why do we have compilation process?
+Work at low level
+preprocessing->compilation->assembly->linking
+What are the different components of the process?
+Why can't I execute individual object code files?
+The object code generated in the assembly stage is composed of machine instructions that the processor understands but some pieces of the program are out of order or missing. To produce an executable program, the existing pieces have to be rearranged and the missing ones filled in. This process is called linking.
+What are the differences between open source and closed source software? When would I want to use one or the other?
+With closed source software, the source code is closely guarded, often because it’s considered a trade secret that creates scarcity and keeps the organization competitive. Such programs come with restrictions against modifying the software or using it in ways untended by the original creators. In principle, open source software means the source code is made available on a universal level. There are some variations on this – some producers do restrict who can access or modify the code – generally, however, the idea is to open up the software to the public, creating a mass collaboration that results in the software being constantly updated, fixed, improved, and expanded on.
+Why do we have 'make'? Why don't we just run gcc from terminal?
+The purpose of a makefile is to be easily build an executable that might take many commands to create (which would be a pain to compile over and over again manually).
+Why not just change the original source code to fix it? Why do we have patches?
+Patches make development easier, because instead of supplying a replacement file, possibly consisting of thousands of lines of code, the patch includes only the exact changes that were made. In effect, a patch is a list of all the changes made to a file, which can be used to re-create those changes on another copy of that file.
 
 
-Regular expression
+Assignment 5
+Why are these system calls and not just regular library functions?
+read, write, open, close, fstat
+System Calls are a way for user programs (running in user mode) to request some service from Operating System. In other words, system calls allow the user programs to ask OS to do some stuff on behalf of the user program. User programs are not allowed to work directly with them since there is a likelihood of our programs corrupting important data structures in kernel. They are best managed by the OS itself which takes care of locking, recovery/cleanup and other things that guarantee that data structures are accessed in correct manner.
 
-*Implementing versions of tr, compare to the original?
+Assignment 6
+Why are the benefits of single core having illusion of parallelism by switching processes quickly?
+You are able to multitask because modern processors use "multithreading", which allows you to perform concurrent processing, even if only a single core processor. The more cores you have, the better the work load is divided up. Each core can execute only one instruction at a time, however it's so fast it seems as if you are running multiple threads simultaneously. 
 
-grep, sed
+What can go wrong in multithreading?
+	What are race conditions?
+	What is deadlock?
 
-Python
-	Classes and member functions
-	Writing python code
-	Argparse library
+What are some approaches to make multithreading safer? What are the possible advantages or disadvantgaes of each of these approaches?
+Locks:
+Synchronizing the critical sections. When you do that, only 1 thread can work with this part at 1 time, but take care when you use that, only for the source code which all thread can’t run together. This one will make the performance go down.
 
-C language
+Use immutable objects. Immutable objects are simply objects whose state (the object’s data) can’t change after construction.
+
+Use thread-safe wrappers. This means you put the main class (which isn’t thread-safe) inside a new class that is thread-safe. This way is helpful when the main class from third party or can’t update.
+
+Assignment 8
+How are libraries dynamically linked?
+What are the advantages and disadvantages of dynamic linking (as opposed to static linking)?
+How does the building process change with dynmaic linking? Dynamic linking at runtime instead of compile-time.
+What computational or data overhead could dynamic linking require?
+Load so, resolve address, missing dynamic lib, wrong lib. A DLL can start to pay off when it is already loaded in another process. Now the code pages of the DLL are simply shared, startup overhead is very low and memory usage is efficient.
+
+Assignment 9
+Why bother with source control?
+What are the strengths and weakness of source control?
+What would i want to use it? How do I use it?
+What is a branch?
+Branching means you diverge from the main line of development and continue to do work without messing with that main line.
+What is the difference between a working copy and the repository?
+Check out is the term used to describe the process of making a copy of a project from a repository into your local file system. This checked out copy is called a working copy.
+
+What is a commit? What should be in a commit?
+With Git, every time you commit, or save the state of your project, Git basically takes a picture of what all your files look like at that moment and stores a reference to that snapshot. Typically, you’ll want to start making changes and committing snapshots of those changes into your repository each time the project reaches a state you want to record. Commit message.
+Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
+
+How many files could commits contain?
+Files added from $ git add . 
+(modified files)
+
+Why bother having branches? Why can't we just all work on the same single master branch?
+What happens when we perform a merge? How does it work?
+Join two or more development histories together. Incorporates changes from the named commits (since the time their histories diverged from the current branch) into the current branch. This command is used by git pull to incorporate changes from another repository and can be used by hand to merge changes from one branch into another. Suppose you’ve decided that your issue #53 work is complete and ready to be merged into your master branch. In order to do that, you’ll merge your iss53 branch into master, much like you merged your hotfix branch earlier. All you have to do is check out the branch you wish to merge into and then run the git merge command:
+ $ git checkout master
+  Switched to branch 'master'
+  $ git merge iss53
+  Merge made by the 'recursive' strategy.
+  index.html |    1 +
+  1 file changed, 1 insertion(+)
+Instead of just moving the branch pointer forward, Git creates a new snapshot that results from this three-way merge and automatically creates a new commit that points to it. This is referred to as a merge commit, and is special in that it has more than one parent.
+Now that your work is merged in, you have no further need for the iss53 branch. You can close the ticket in your ticket-tracking system, and delete the branch:
+
+
+
+Assignment 2
+-------------------------------------------------------------------------------
+*****Part 1******
+Execute the following commands and send the outputs into six text files:
+	$ cat assign2.html | tr -c 'A-Za-z' '[\n*]'
+		Replace non-letter characters with new lines.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]'
+		Replace non-letter characters with new lines and replace a sequence 
+		of repeated characters (in this case, new lines) with a single 
+		occurence.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort
+		Sort the previous command's output.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u
+		Remove any duplicates from the previous command's output.
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words
+		Compare the previous command's output with the list of English words.
+		Column 1 contains lines unique to assign2.html, column 2 contains 
+		lines unique to words, column 3 contains lines common to both files. 
+	$ cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words
+		Output the words that are unique to assign2.html and not in words.
+
+-------------------------------------------------------------------------------
+*****Part 2******
+$ wget http://mauimapp.com/moolelo/hwnwdseng.htm
+	Obtain a copy of the web page.
+
+Inside buildwords:
+#! /bin/sh
+# case-insensitive
+tr [:upper:] [:lower:] |
+	Translate all upper case letters to lower case letters.
+tr [\`] \'  |
+	Translate all grave accents to apostrophes.
+sed 's/?//g' |
+	Remove questions marks.
+sed 's/^ *//g' |
+	Remove leading whitespaces in each line.
+sed -n '/<tr>/ {s/.*//; N; N; s/\n//g; p;}' |
+	Delete newlines after every <tr>
+sed 's/<td>.*<td>//' |
+	English words are between <td> and <td>, remove them.
+sed 's/<[^>]*.//g' |
+	Delete html brackets.
+grep ^[pk\'mnwlhaeiou] |
+	Pick words that start with Hawaiian letters.
+tr , '\n' |
+	Entries with commas contain multiple words.
+tr - '\n' |
+	Entries with hyphens contain multiple words.
+sed 's/ /\n/g' |
+	Entries with spaces contain multiple words.
+sed "/[^pk\'mnwlhaeiou]/d" |
+	Remove improperly formatted hawaiian words
+sed '/^\s*$/d' |
+	Remove extra empty lines
+sort -u
+	Sort the words and remove duplicates.
+
+$ cat hwnwdseng.htm | ./buildwords > hwords
+	Write the Hawaiian words into hwords.
+
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort 
+-u | comm -23 - words > me
+	Running English spelling checker on assign2.html.
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort 
+-u | comm -23 - hwords > mh1
+	Running Hawaiian spelling checker on assign2.html, look at all words.
+$ cat assign2.html | tr [:upper:] [:lower:] | tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+ sort -u | comm -23 - hwords > mh2
+	Running Hawaiian spelling checker on assign2.html, and only look at the 
+	valid Hawaiian words.
+$ cat hwords | tr [:upper:] [:lower:] | tr -cs 'A-Za-z' '[\n*]' | sort -u | 
+comm -23 - hwords > hh1
+	Since tr -cs command replaces all apostrophes, the spelling check 
+	generate 45 mispelled words to hh1.
+$ cat hwords | tr [:upper:] [:lower:] | sort -u | comm -23 - hwords > hh2
+	Running Hawaiian spelling checker on hwords. hh2 is empty because hwords 
+	is the dictionary itself.
+$ diff me mh > m.diff
+	Find the difference between misspelled words in English and misspelled 
+	words in Hawaiian.
+
+By examining me, mh1, and mh2:
+	me: 38 misspelled in assign2 as English
+	mh1: 405 misspelled in assign2 as Hawaiian if improperly formatted English words
+	are considered misspelled Hawaiian words.
+	mh2: 196 misspelled in assign2 as Hawaiian if we look at words with only Hawaiian
+	letters.
+$ comm -12 me hwords
+	Misspelled as English but not as Hawaiian: wiki, lau, halau.
+$ comm -12 mh1 words
+	Misspelled as Hawaiian but not as English (370):
+
+
+#! /bin/sh
+# sameln
+# Declare variables
+declare -a a
+D=$1
+
+IFS=$'\n'
+files=$(find $D -maxdepth 1 -type f | sort)
+#filesWithDot=$(ls -a $D | grep ^[.] | sort)
+
+
+# Add files into the array of files
+i=0
+
+# Add other files
+for f in $files
+do
+    a[$i]="$f"
+    ((i++))
+done
+
+# Report the error if the file is not readable
+for ((j=0;j<i;j++))
+do
+    if [ ! -r "${a[$j]}" ]
+    then
+        echo "ERROR: ${a[$j]} is not readable"
+    fi
+done
+
+
+for ((k=0;k<i;k++))
+do
+	if [[ -L ${a[$k]} ]]
+	then
+	    continue
+	fi
+
+    for ((j=k+1;j<i;j++))
+    do
+        # Only look at the readable regular files
+        if [[ -r "${a[$j]}" && -f "${a[$j]}" && -r "${a[$k]}" && -f "${a[$k]}" ]]
+        then
+            # Find out if the files are duplicates
+	    if [[ "${a[$k]}"!="${a[$j]}" ]]
+	    then
+		
+            cmp -s "${a[$j]}" "${a[$k]}"
+            if [ $? -eq 0 ]
+            then
+                # Replace the duplicate with hard links to the first file
+                echo "Replace ${a[$j]} with ${a[$k]}"
+		        echo "Remove ${a[$j]}"
+                ln -fP "${a[$k]}" "${a[$j]}"
+            fi
+	    fi
+        fi
+    done
+done
+unset IFS
+
+
+
+
+Assignment 3
+hw3.txt
+===============================================================================
+Q4. What happens when this script is invoked with Python 3 rather than Python 
+2, and why? (You can run Python 3 on the SEASnet hosts by using the command 
+python3 instead of python.)
+
+$ python3 ./randline.py -n 1 assign1.html
+  File "./randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+There is a syntax error when handling exceptions due to the difference between
+python2 and python3. In python3, the correct syntax could be:
+	except IOError as e:
+        parser.error("I/O error({0}): {1}".
+                     format(e.errno, e.strerror))
+
+
+
+
+#!/usr/bin/python
+import random, sys
+from optparse import OptionParser
+import string
+
+class perm:
+  def __init__(self, filename):
+    if type(filename) is str:
+      if filename == "-":
+        self.lines = sys.stdin.readlines()
+      else:
+        f = open(filename, 'r')
+        self.lines = f.readlines()
+        f.close()
+    else:
+      self.lines = filename
+  def choosePerm(self):
+    random.shuffle(self.lines)
+    return self.lines
+  def chooseRand(self):
+    if len(self.lines) != 0:
+      return random.choice(self.lines)
+    return None
+
+def main():
+  version_msg = "%prog 1.0"
+  usage_msg = """%prog [OPTION]... FILE
+
+Write a random permutation of the input lines to standard output."""
+
+  
+  parser = OptionParser(version = version_msg, usage = usage_msg)
+  parser.add_option("-e", "--echo", action = "store_true", dest = "echo",
+                    default = False,
+                    help = "treat each ARG as an input file")
+  parser.add_option("-n", "--head-count", action = "store", dest = "count",
+                    help = "output at most COUNT lines")
+  parser.add_option("-r", "--repeat", action = "store_true", dest = "repeat",
+                    default = False,
+                    help = "output lines can be repeated")
+  options, args = parser.parse_args(sys.argv[1:])
+
+  count = 0
+  limit = True
+  if options.count ==  None:
+    limit = False
+  else:
+    count = int(options.count)
+  echo = bool(options.echo)
+  repeat = bool(options.repeat)
+
+  if limit and count < 0:
+    parser.error("negative count: {0}".format(count))
+    
+  if echo:
+    input_file = [None] * len(args)
+    for index in range(len(args)):
+      input_file[index] = args[index] + "\n"
+  elif len(args) == 1:
+    input_file = args[0]
+  elif len(args) > 1:
+    parser.error("wrong number of operands")
+  else:
+    input_file = sys.stdin.readlines()
+
+  try:
+    generator = perm(input_file)
+    output = []
+    if repeat:
+      if generator.chooseRand() == None:
+        parser.error("no lines to repeat")
+    else:
+      output = generator.choosePerm()
+      if not limit or len(output) < count:
+        count = len(output)
+      for index in range(count):
+        sys.stdout.write(output[index])        
+  except IOError as e:
+    parser.error("I/O error({0}): {1}".format(e.errno, e.strerror))
+
+
+if __name__ == "__main__":
+  main()
+
+
+
+
+
+
+#!/usr/bin/python
+import random, sys
+from optparse import OptionParser
+class randline:
+    def __init__(self, filename):
+        f = open(filename, 'r')
+        self.lines = f.readlines()
+        f.close()
+def chooseline(self):
+        return random.choice(self.lines)
+def main():
+    version_msg = "%prog 2.0"
+    usage_msg = """%prog [OPTION]... FILE
+Output randomly selected lines from FILE."""
+parser = OptionParser(version=version_msg,
+                          usage=usage_msg)
+    parser.add_option("-n", "--numlines",
+                      action="store", dest="numlines", default=1,
+                      help="output NUMLINES lines (default 1)")
+    
+    options, args = parser.parse_args(sys.argv[1:])
+try:
+        numlines = int(options.numlines)
+    except:
+        parser.error("invalid NUMLINES: {0}".
+                     format(options.numlines))
+    if numlines < 0:
+        parser.error("negative count: {0}".
+                     format(numlines))
+    if len(args) != 1:
+        parser.error("wrong number of operands")
+    input_file = args[0]
+try:
+        generator = randline(input_file)
+        for index in range(numlines):
+            sys.stdout.write(generator.chooseline())
+    except IOError as (errno, strerror):
+        parser.error("I/O error({0}): {1}".
+                     format(errno, strerror))
+if __name__ == "__main__":
+    main()
+
+
+
+lab4.txt
+===============================================================================
+1. Build this old version of coreutils as-is, and then again with this renaming
+patch. What problems did you have when building it as-is, and why did the 
+renaming patch fix them?
+$ wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/
+coreutils-with-bug.tar.gz
+$ tar xvf coreutils-with-bug.tar.gz
+	Fetch the old version of coreutils.
+
+Install the old version of coreutils:
+$ cd
+$ mkdir lab4
+$ realpath lab4
+/w/home.20/cs/ugrad/huimin/lab4
+	Create a directory to install coreutils.
+
+$ cd ~/coreutils-with-bug
+$ ./configure --prefix=/w/home.20/cs/ugrad/huimin/lab4
+$ make
+In file included from utimecmp.c:41:0:
+utimens.h:2:5: error: conflicting types for 'futimens'
+ int futimens (int, char const *, struct timespec const [2]);
+     ^~~~~~~~
+In file included from utimecmp.h:25:0,
+                 from utimecmp.c:25:
+/usr/include/sys/stat.h:373:12: note: previous declaration of 'futimens' was 
+here
+ extern int futimens (int __fd, const struct timespec __times[2]) __THROW;
+            ^~~~~~~~
+make[3]: *** [Makefile:659: utimecmp.o] Error 1
+make[3]: Leaving directory 
+'/w/home.20/cs/ugrad/huimin/35LA4/coreutils-with-bug/lib'
+make[2]: *** [Makefile:414: all] Error 2
+make[2]: Leaving directory 
+'/w/home.20/cs/ugrad/huimin/35LA4/coreutils-with-bug/lib'
+make[1]: *** [Makefile:419: all-recursive] Error 1
+make[1]: Leaving directory 
+'/w/home.20/cs/ugrad/huimin/35LA4/coreutils-with-bug'
+make: *** [Makefile:357: all] Error 2
+	Encounter an error in utimens.h and stat.h.
+
+$ make clean
+
+Apply the patch:
+$ wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/coreutils.diff
+$ patch -p0 < coreutils.diff
+patching file lib/utimens.c
+patching file lib/utimens.h
+patching file src/copy.c
+patching file src/tee.c
+patching file src/touch.c
+$ ./configure --prefix=/w/home.20/cs/ugrad/huimin/lab4
+$ make
+$ make install
+$ ls ~/lab4
+bin  share
+
+I could not build the old version of coreutils as-is, as I encountered the 
+error which states that the previous declaration in stat.h for the function 
+'futimens' has a conflict with the function 'futimens' in utimens.h. The old 
+version of coreutils is outdated (version 5.93), so it might contain functions 
+that conflict with the updated C standards. Therefore, the patch renames 
+'futimens' and some other functions by adding prefix 'coreutils_' and corrects 
+the places where these functions are called, such as in touch.c, copy.c, and 
+main. 
+
+
+===============================================================================
+2. Reproduce the problem. Use a debugger to figure out what went wrong and to 
+fix the corresponding source file.
+$ cd ~/lab4/bin
+$ tmp=$(mktemp -d)
+$ cd $tmp
+$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+$ touch now
+$ sleep 1
+$ touch now1
+$ TZ=UTC0 ~/lab4/bin/ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+
+I also tried to use the installed version of coreutils:
+$ TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:38.750511073 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-02 23:53:33.233417906 +0000 now
+-rw-r--r-- 1 huimin csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+It works correctly without the bug.
+
+
+Inside $tmp, I use a debugger to figure out the buggy source file:
+$ gdb ~/lab4/bin/ls
+(gdb) run -lt --full-time wwi-armistice now
+	Running ls with wwi-artimistice with one other file
+(gdb) break sort_files
+Breakpoint 1 at 0x4042f0: file ls.c, line 2954.
+(gdb) run -lt --full-time wwi-armistice now
+Starting program: /w/home.20/cs/ugrad/huimin/lab4/bin/ls -lt --full-time wwi-armistice now
+
+Breakpoint 1, sort_files () at ls.c:2954
+2954	{
+(gdb) step
+2962	  if (! setjmp (failed_strcoll))
+(gdb) step
+2964	      switch (sort_type)
+(gdb) step
+2969		  switch (time_type)
+(gdb) step
+2975		      func = sort_reverse ? rev_cmp_mtime : compare_mtime;
+(gdb) break compare_mtime
+Breakpoint 2 at 0x4067c0: file ../lib/timespec.h, line 48.
+(gdb) disable 1
+(gdb) run -lt --full-time wwi-armistice now
+Starting program: /w/home.20/cs/ugrad/huimin/lab4/bin/ls -lt --full-time wwi-armistice now
+
+Breakpoint 2, compare_mtime (a=0x6170d0, b=0x617180) at ls.c:2884
+2884	static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+(gdb) step
+cmp_mtime (cmp=0x4045f0 <xstrcoll>, b=0x617180, a=0x6170d0) at ls.c:2884
+2884	static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+(gdb) step
+timespec_cmp (b=..., a=...) at ../lib/timespec.h:48
+48	  int diff = a.tv_sec - b.tv_sec;
+(gdb) print diff
+$1 = -1155827283
+(gdb) list compare_time
+43	/* Return negative, zero, positive if A < B, A == B, A > B, respectively.
+44	   Assume the nanosecond components are in range, or close to it.  */
+45	static inline int
+46	timespec_cmp (struct timespec a, struct timespec b)
+47	{
+48	  int diff = a.tv_sec - b.tv_sec;
+49	  return diff ? diff : a.tv_nsec - b.tv_nsec;
+50	}
+51	
+52	# if ! HAVE_DECL_NANOSLEEP
+(gdb)
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 13300] will be killed.
+
+Quit anyway? (y or n) y
+
+
+I used gdb to find out that there might be a problem with 'diff' calculated in 
+timespec_cmp function, which appears to be in the lib/timespec.h:48. The number
+is very large to the negative side, so it might cause a problem of overflowing,
+or not being recognized by later functions. 
+
+
+===============================================================================
+3. Construct a new patch file lab4.diff containing your coreutils fixes, in the 
+form of a ChangeLog entry followed by a diff -u patch.
+
+$ cd ~/coreutils-with-bug/lib
+$ find times*
+timespec.h
+$ cp timespec.h timespec2.h
+	Make a copy of the older version in order to make the patch.
+$ mv timespec2.h ~
+$ emacs timespec.h
+	Change the timespec_cmp function in timespec.h.
+$ cd
+$ diff -u timespec2.h ~/coreutils-with-bug/lib/timespec.h > lab4.diff
+
+
+===============================================================================
+4.Also, try to reproduce the problem in your home directory on the SEASnet Linux
+servers, instead of using the $tmp directory. When running the above test case,
+use the already-installed touch and ls utilities instead of the old version of 
+coreutils. How well does SEASnet do?
+$ cd
+$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+$ touch now
+$ sleep 1
+$ touch now1
+$ TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 huimin csugrad 0 2054-12-17 17:28:16.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 huimin csugrad 0 2018-05-03 04:31:56.081174000 +0000 now1
+-rw-r--r-- 1 huimin csugrad 0 2018-05-03 04:31:48.210436000 +0000 now
+
+Instead of creating a file in 1918-11-11, the touch -d command creates a file 
+in 2054-12-17. Unix Epoch defines a point in time as the number of seconds 
+elapsed since 1970-1-1 00:00. SEASnet NFS filesystem uses unsigned time stamps, 
+whereas local file system on Linux server uses signed time stamps. Therefore, 
+the time before 1970-1-1 00:00 will round to the future like an overflow 
+behavior in SEASnet NFS filesystem. 
+
+
+
+
+
+sfrob.c
+#include <stdio.h>
+#include <stdlib.h>
+
+int frobcmp(const void* a, const void* b)
+{
+  if (a && b) {
+  // compare two char arrays
+  const char* charArrA = *(const char**)a;
+  const char* charArrB = *(const char**)b;
+
+  while ((*charArrA) != ' ' && (*charArrB) != ' ')
+  {
+    // decode each char
+    char ca = (*charArrA)^42;
+    char cb = (*charArrB)^42;
+
+    if (ca > cb)
+      return 1;
+    else if (ca < cb)
+      return -1;
+    else
+    {
+      charArrA++;
+      charArrB++;
+    }
+  }
+
+  // if A ends earlier than B
+  if ((*charArrA) == ' ' && (*charArrB) != ' ')
+    return -1;
+  // if B enes earlier than A
+  else if ((*charArrB) == ' ' && (*charArrA) != ' ')
+    return 1;
+  // if they are the same
+  else return 0;
+  }
+  else {
+    fprintf(stderr, "frobcmp failed");
+    exit(1);
+  }
+}
+
+int main()
+{
+  int c = getchar();
+  if (c == EOF || c == '\0')
+    return 0;
+  if (c == '\n')
+    c = getchar();
+  char** arr = malloc(sizeof(char*));
+  char* phrase = malloc(sizeof(char));
+  int psize = 1;
+  int asize = 1;
+  if (arr == NULL || phrase == NULL)
+  {
+    fprintf(stderr, "malloc failed");
+    exit(1);
+  }
+  char prev = '0';
+  while (!ferror(stdin))
+  {
+    if (c == ' ')
+    {
+      phrase[psize-1] = ' ';
+      arr[asize-1] = phrase;
+      c = getchar();
+      if (c!=EOF) {
+
+
+      char* nextphrase = (char*) malloc(sizeof(char));
+      if (nextphrase != NULL) {
+	phrase = nextphrase;
+      }
+      else {
+	fprintf(stderr, "malloc failed");
+	exit(1);
+      }
+      psize = 1;
+	asize++;
+	char** newarr = (char**)realloc(arr, asize*sizeof(char*));
+	if (newarr != NULL)
+	  {
+	    arr = newarr;
+	  }
+	else
+	  {
+	    fprintf(stderr, "realloc failed");
+	    exit(1);
+	  }
+      }
+      else {
+	break;
+      }
+    }
+    else if (c == EOF)
+    {
+      if (prev != ' ')
+      {
+	phrase[psize-1] = ' ';
+      }
+      arr[asize-1] = phrase;
+      break;
+      }
+    else
+    {
+      char cchar = c;
+      phrase[psize-1] = cchar;
+      psize++;
+      char* newphrase = realloc(phrase, (psize+1)*sizeof(char));
+      if (newphrase != NULL)
+      {
+        phrase = newphrase;
+      }
+      else
+      {
+        fprintf(stderr, "realloc failed");
+        exit(1);
+      }
+      c = getchar();
+    }
+
+    prev = c;
+  }
+  if (ferror(stdin)) {
+    fprintf(stderr, "read error");
+    exit(1);
+  }
+
+  //    printf("arr size: %d\n", asize);
+
+  qsort(arr, asize, sizeof(char*), frobcmp);
+
+  // Output
+  size_t i, k;
+  for (k = 0; k < asize; k++) {
+    for (i = 0; ;i++) {
+      char ch = arr[k][i];
+      if (ch != ' ')
+	putchar(ch);
+      else {
+	putchar(ch);
+	break;
+      }
+    }
+  }
+
+  
+  for (k = 0; k < asize; k++){
+    if (arr[k]) {
+      free(arr[k]);
+      arr[k] = NULL;
+    }
+  }
+  if (arr) {
+    free(arr);
+    arr = NULL;
+  }
+  return 0;
+}
+
+
+
+
+
+Assignment 5
+lab.txt
+1. Use the strace command to compare the system calls issued by your tr2b and tr2u commands (a) when copying one file to another, and 
+(b) when copying a file to your terminal. Use a file that contains at least 5,000,000 bytes.
+
+Copying one file to another takes longer than copying a file to the terminal. One possible reason for this is that strace might not track 
+the processes of writing to a separate file after stdout, while it tracks writing to the terminal. tr2u is slower than tr2b. Approximately, 
+tr2u performs one system call for each byte. The privilege switch for each read() and write() causes tr2u to run slower and perfomr more 
+system calls than tr2b.
+
+2. Use the time command to measure how much faster one program is, compared to the other, when copying the same amount of data.
+
+tr2u takes longer time than tr2b because tr2u uses system calls, which cause a switch from user mode to kernel mode. System calls like read() 
+and write() cause a trap to interrupt the user process and the kernel takes control of the processor. Then the kernel executes the system 
+call and returns the processor to the user process. Therefore, system calls are expensive to use due to the privilege switch. 
+
+
+
+
+sfrobu.c
+#include <stdlib.h>
+#include <unistd.h>
+#include <limits.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <ctype.h>
+int cmp(const void* a, const void* b, int upper)
+{
+  if (a && b) {
+  // compare two char arrays
+  const char* charArrA = *(const char**)a;
+  const char* charArrB = *(const char**)b;
+
+  while ((*charArrA) != ' ' && (*charArrB) != ' ')
+  {
+    // decode each char
+    char ca = (*charArrA)^42;
+    char cb = (*charArrB)^42;
+
+    if (upper) {
+      if (ca >= -1 && ca <= UCHAR_MAX)
+	ca = toupper(ca);
+      if (cb >= -1 && cb <= UCHAR_MAX)
+        cb = toupper(cb);
+    }
+    
+    if (ca > cb)
+      return 1;
+    else if (ca < cb)
+      return -1;
+    else
+    {
+      charArrA++;
+      charArrB++;
+    }
+  }
+
+  // if A ends earlier than B
+  if ((*charArrA) == ' ' && (*charArrB) != ' ')
+    return -1;
+  // if B enes earlier than A
+  else if ((*charArrB) == ' ' && (*charArrA) != ' ')
+    return 1;
+  // if they are the same
+  else return 0;
+  }
+  else {
+    write(2, "frobcmp failed\n", 15);
+    exit(1);
+  }
+}
+
+
+int frobcmpu(const void* a, const void* b)
+{
+  return cmp(a, b, 1);
+}
+int frobcmp(const void* a, const void* b)
+{
+  return cmp(a, b, 0);
+}
+
+
+int main(int argc, char **argv)
+{
+  struct stat buf;
+  int f = fstat(0,&buf);
+  off_t size = buf.st_size;
+  if (size < 0) {
+    write(2, "fstat failed\n",13);
+    exit(1);
+  }
+  
+  //  printf("size: %d\n", size);
+
+  char* text = malloc(size*sizeof(char));
+
+  int upper = 0;
+  if (argc > 2) {
+    write(2, "#arg error\n", 11);
+    exit(1);
+  }
+  else if (argc == 2) {
+    if (strcmp(argv[1], "-f") == 0) {
+      upper = 1;
+    }
+    else {
+      write(2, "wrong arg\n", 10);
+      exit(1);
+    }
+  }
+
+  //printf("file size: %d\n", size);
+  
+  int it = 0;
+  while (1) {
+    int c;
+    int bytes = read(0, &c, 1);
+    if (bytes == 0) {
+      break;
+    }
+    if (!S_ISREG(0) && it >= size) {
+      size++;
+      char* newarr = realloc(text, size*sizeof(char));
+      if (!newarr) {
+        write(2, "realloc failed\n", 15);
+        exit(1);
+      }
+      text = newarr;
+    }
+
+    text[it] = c;
+    it++;
+  }
+
+  //printf("%s", text);
+
+  if (text[size-1] != ' ') {
+    size++;
+    char* newarr = realloc(text, size*sizeof(char));
+    if (!newarr) {
+      write(2, "realloc failed\n", 15);
+      exit(1);
+    }
+    text = newarr;
+    text[size-1] = ' ';
+  }
+  int nPhrases = 0;
+  for (size_t i = 0; i < size; i++) {
+    if (text[i] == ' ')
+      nPhrases++;
+  }
+
+  //  printf("\n%d phrases\n", nPhrases);
+
+  char** arr = malloc(nPhrases*sizeof(char*));
+  if (!arr) {
+    write(2, "malloc failed\n", 14);
+    exit(1);
+  }
+
+  
+  arr[0] = &(text[0]);
+  size_t asize = 1;
+  for (size_t i = 0; i < size-1; i++) {
+    if (text[i] == ' ')
+      arr[asize++] = &(text[i+1]);
+  }
+
+  if (!upper)
+    qsort(arr, asize, sizeof(char*), frobcmp);
+  else
+    qsort(arr, asize, sizeof(char*), frobcmpu);
+
+
+  for (size_t i = 0; i < asize; i++) {
+    for (size_t j = 0; ; j++) {
+      char ch = arr[i][j];
+      if (ch == ' ') {
+	write(1, &ch, 1);
+	break;
+      }
+      else
+	write(1, &ch, 1);
+    }
+  }
+  
+  if (text) {
+    free(text);
+    text = NULL;
+  }
+
+  if (arr) {
+    free(arr);
+    arr = NULL;
+  }
+}
+
+
+tr2b.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int length(char *a) {
+  int length = 0;
+  for (size_t j = 0; a[j] != '\0'; j++)
+    length++;
+  return length;
+}
+
+int main(int argc, char** argv) {
+  if (argc != 3) {
+    fprintf(stderr, "wrong number of arguments\n");
+    exit(1);
+  }
+  
+  char* from = argv[1];
+  char* to = argv[2];
+
+  if (length(from) != length(to)) {
+    fprintf(stderr, "length error\n");
+    exit(1);
+  }
+
+  int len = length(from);
+  for (size_t i = 0; i < len; i++) {
+    for (size_t j = i+1; j < len; j++) {
+      if (from[i] == from[j]) {
+	fprintf(stderr, "duplicate bytes\n");
+	exit(1);
+      }
+    }
+  }
+
+
+  while (!ferror(stdin)) {
+    int c = getchar();
+    if (c == EOF)
+      break;
+    for (size_t i = 0; i < len; i++) {
+      if (c == from[i]) {
+	c = to[i];
+	break;
+      }
+    }
+    putchar(c);
+  }
+  return 0;
+}
+
+tr2u.c
+#include <stdlib.h>
+#include <unistd.h>
+
+int length(char *a) {
+  int length = 0;
+  for (size_t j = 0; a[j] != '\0'; j++)
+    length++;
+  return length;
+}
+
+int main(int argc, char** argv) {
+  if (argc != 3) {
+    write(2, "wrong number of arguments\n", 26);
+    exit(1);
+  }
+  
+  char* from = argv[1];
+  char* to = argv[2];
+
+  if (length(from) != length(to)) {
+    write(2, "length error\n", 13);
+    exit(1);
+  }
+
+  int len = length(from);
+  for (size_t i = 0; i < len; i++) {
+    for (size_t j = i+1; j < len; j++) {
+      if (from[i] == from[j]) {
+	write(2, "duplicate bytes\n", 16);
+	exit(1);
+      }
+    }
+  }
+
+
+  while (1) {
+    int c = 0;
+    int bytes = read(0, &c, 1);
+    if (bytes == 0) {
+      break;
+    }
+    for (size_t i = 0; i < len; i++) {
+      if (c == from[i])
+	c = to[i];
+    }
+    write(1, &c, 1);
+  }
+  return 0;
+}
+
+
+
+sfrobs
+#!/bin/sh
+# sfrob
+
+export LC_ALL='C'
+
+arg=${1:-default}
+
+encrypt=$(awk 'BEGIN { for (i = 0; i <= 255; i++) printf "\\%o", i }')
+
+decrypt=$(awk 'BEGIN { for (i = 0; i <= 255; i++) printf "\\%o", xor(i, 42) }')
+
+if [ "$arg" = "default" ]
+then
+    cat | tr "$encrypt" "$decrypt" | sort | tr "$decrypt" "$encrypt"
+elif [ "$arg" = "-f" ]
+then
+    cat | tr "$encrypt" "$decrypt" | sort --ignore-case | tr "$decrypt" "$encrypt"
+fi
+
+
+
+
+Assignment 6
+log.txt
+1. Run the command sort --version to make sure you're using a new-enough version. 
+$ sort --version
+sort (GNU coreutils) 8.29
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert.
+
+
+2. Generate a file containing 10,000,000 random single-precision floating point numbers, in textual form, one per line with no white space. 
+	$ od -An -f -N 40000000 < /dev/urandom | tr -s ' ' '\n' > random.txt
+		Generate a file with 10000000 floating point numbers. Since each float is 4 bytes, the file needs to be 40000000 bytes. Transform all spaces to new lines.
+	$ cat random.txt | wc -l
+	10000001
+		Check the number of lines. The output should be 10000000.
+	$ cat random.txt | sed '/^[[:space:]]*$/d' > myFile.txt
+		Remove the additional new line.
+
+3. time -p to time the command sort -g on that data, with the output sent to /dev/null. 
+
+4. Invoke sort with the --parallel option as well as the -g option, and run your benchmark with 1, 2, 4, and 8 threads, in each case recording the real, user, and system time. 
+
+	$ echo $PATH
+	/usr/local/cs/bin/:/usr/lib64/qt-3.3/bin:/u/cs/ugrad/huimin/perl5/bin:/usr/lib64/ccache:/usr/local/bin:/usr/bin:/usr/X11R6/bin:/usr/local/cs/bin:/u/cs/ugrad/huimin/bin
+	$ time -p sort -g myFile.txt > /dev/null
+	real 21.91
+	user 114.87
+	sys 0.49
+	$ time -p sort -g --parallel=1 myFile.txt > /dev/null
+	real 109.57
+	user 109.27
+	sys 0.29
+	$ time -p sort -g --parallel=2 myFile.txt > /dev/null
+	real 60.27
+	user 114.60
+	sys 0.34
+	$ time -p sort -g --parallel=4 myFile.txt > /dev/null
+	real 33.71
+	user 113.41
+	sys 0.36
+	$ time -p sort -g --parallel=8 myFile.txt > /dev/null
+	real 21.89
+	user 114.54
+	sys 0.45
+	
+The real time gets shorter as the number of threads increases due to parallelism.
+I don't see an obvious changing pattern with respect to system time, and user time
+almost stays constant. 
+When we can divide tasks into various independent steps with shared memory by running
+multiple cores together, we can get a better performance, as long as the overhead is
+still small.
+
+sfrobu.c
+#include <stdlib.h>
+#include <unistd.h>
+#include <limits.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <ctype.h>
+int cmp(const void* a, const void* b, int upper)
+{
+  if (a && b) {
+  // compare two char arrays
+  const char* charArrA = *(const char**)a;
+  const char* charArrB = *(const char**)b;
+
+  while ((*charArrA) != ' ' && (*charArrB) != ' ')
+  {
+    // decode each char
+    char ca = (*charArrA)^42;
+    char cb = (*charArrB)^42;
+
+    if (upper) {
+      if (ca >= -1 && ca <= UCHAR_MAX)
+	ca = toupper(ca);
+      if (cb >= -1 && cb <= UCHAR_MAX)
+        cb = toupper(cb);
+    }
+    
+    if (ca > cb)
+      return 1;
+    else if (ca < cb)
+      return -1;
+    else
+    {
+      charArrA++;
+      charArrB++;
+    }
+  }
+
+  // if A ends earlier than B
+  if ((*charArrA) == ' ' && (*charArrB) != ' ')
+    return -1;
+  // if B enes earlier than A
+  else if ((*charArrB) == ' ' && (*charArrA) != ' ')
+    return 1;
+  // if they are the same
+  else return 0;
+  }
+  else {
+    write(2, "frobcmp failed\n", 15);
+    exit(1);
+  }
+}
+
+
+int frobcmpu(const void* a, const void* b)
+{
+  return cmp(a, b, 1);
+}
+int frobcmp(const void* a, const void* b)
+{
+  return cmp(a, b, 0);
+}
+
+
+int main(int argc, char **argv)
+{
+  struct stat buf;
+  int f = fstat(0,&buf);
+  int size = buf.st_size;
+  if (size < 0) {
+    write(2, "fstat failed\n",13);
+    exit(1);
+  }
+  
+  //  printf("size: %d\n", size);
+
+  char* text = malloc(size*sizeof(char));
+
+  int upper = 0;
+  if (argc > 2) {
+    write(2, "#arg error\n", 11);
+    exit(1);
+  }
+  else if (argc == 2) {
+    if (strcmp(argv[1], "-f") == 0) {
+      upper = 1;
+    }
+    else {
+      write(2, "wrong arg\n", 10);
+      exit(1);
+    }
+  }
+
+  //printf("file size: %d\n", size);
+  
+  int it = 0;
+  int c = 0;
+  int bytes = read(0, &c, 1);
+  if (bytes == 0)
+    return 0;
+  while (1) {
+    if (bytes == 0) {
+      break;
+    }
+    if (!S_ISREG(0) && it >= size) {
+      size++;
+      char* newarr = realloc(text, size*sizeof(char));
+      if (!newarr) {
+        write(2, "realloc failed\n", 15);
+        exit(1);
+      }
+      text = newarr;
+    }
+    text[it] = c;
+    it++;
+    bytes = read(0, &c, 1);
+  }
+
+  //printf("%s", text);
+
+  if (text[size-1] != ' ') {
+    size++;
+    char* newarr = realloc(text, size*sizeof(char));
+    if (!newarr) {
+      write(2, "realloc failed\n", 15);
+      exit(1);
+    }
+    text = newarr;
+    text[size-1] = ' ';
+  }
+  int nPhrases = 0;
+  for (size_t i = 0; i < size; i++) {
+    if (text[i] == ' ')
+      nPhrases++;
+  }
+
+  //  printf("\n%d phrases\n", nPhrases);
+
+  char** arr = malloc(nPhrases*sizeof(char*));
+  if (!arr) {
+    write(2, "malloc failed\n", 14);
+    exit(1);
+  }
+
+  
+  arr[0] = &(text[0]);
+  size_t asize = 1;
+  for (size_t i = 0; i < size-1; i++) {
+    if (text[i] == ' ')
+      arr[asize++] = &(text[i+1]);
+  }
+
+  if (!upper)
+    qsort(arr, asize, sizeof(char*), frobcmp);
+  else
+    qsort(arr, asize, sizeof(char*), frobcmpu);
+
+
+  for (size_t i = 0; i < asize; i++) {
+    for (size_t j = 0; ; j++) {
+      char ch = arr[i][j];
+      if (ch == ' ') {
+	write(1, &ch, 1);
+	break;
+      }
+      else
+	write(1, &ch, 1);
+    }
+  }
+  
+  if (text) {
+    free(text);
+    text = NULL;
+  }
+
+  if (arr) {
+    free(arr);
+    arr = NULL;
+  }
+}
+
+
+
+Assignment 6
+//
+//  main.c
+//  srt
+//
+//  Created by vector on 11/2/10.
+//  Copyright (c) 2010 Brian F. Allen.
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "raymath.h"
+#include "shaders.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <math.h>
+#include <pthread.h>
+...
+scene_t scene;
+int nthreads = 0;
+float color[width][height][3];
+
+void* ThreadFunction(void *arg) {
+  int thread = *(int*)arg;
+  Vec3 camera_pos;
+    set( camera_pos, 0., 0., -4. );
+    Vec3 camera_dir;
+    set( camera_dir, 0., 0., 1. );
+    const double camera_fov = 75.0 * (PI/180.0);
+    Vec3 bg_color;
+    set( bg_color, 0.8, 0.8, 1 );
+
+    const double pixel_dx = tan( 0.5*camera_fov ) / ((double)width*0.5);
+    const double pixel_dy = tan( 0.5*camera_fov ) / ((double)height*0.5);
+    const double subsample_dx
+        = halfSamples  ? pixel_dx / ((double)halfSamples*2.0)
+                       : pixel_dx;
+    const double subsample_dy
+        = halfSamples ? pixel_dy / ((double)halfSamples*2.0)
+                      : pixel_dy;
+
+    /* for every pixel */
+    for( int px=thread; px<width; px+=nthreads )
+    {
+        const double x = pixel_dx * ((double)( px-(width/2) ));
+        for( int py=0; py<height; ++py )
+        {
+            const double y = pixel_dy * ((double)( py-(height/2) ));
+            Vec3 pixel_color;
+            set( pixel_color, 0, 0, 0 );
+
+            for( int xs=-halfSamples; xs<=halfSamples; ++xs )
+            {
+                for( int ys=-halfSamples; ys<=halfSamples; ++ys )
+                {
+                    double subx = x + ((double)xs)*subsample_dx;
+                    double suby = y + ((double)ys)*subsample_dy;
+
+                    /* construct the ray coming out of the camera, through
+                     * the screen at (subx,suby)
+                     */
+                    ray_t pixel_ray;
+                    copy( pixel_ray.org, camera_pos );
+                    Vec3 pixel_target;
+                    set( pixel_target, subx, suby, z );
+                    sub( pixel_ray.dir, pixel_target, camera_pos );
+                    norm( pixel_ray.dir, pixel_ray.dir );
+
+                    Vec3 sample_color;
+                    copy( sample_color, bg_color );
+                    /* trace the ray from the camera that
+                     * passes through this pixel */
+                    trace( &scene, sample_color, &pixel_ray, 0 );
+                    /* sum color for subpixel AA */
+                    add( pixel_color, pixel_color, sample_color );
+                }
+            }
+
+            /* at this point, have accumulated (2*halfSamples)^2 samples,
+             * so need to average out the final pixel color
+             */
+            if( halfSamples )
+            {
+                mul( pixel_color, pixel_color,
+                     (1.0/( 4.0 * halfSamples * halfSamples ) ) );
+            }
+
+            /* done, final floating point color values are in pixel_color */
+            float scaled_color[3];
+            scaled_color[0] = gamma( pixel_color[0] ) * max_color;
+            scaled_color[1] = gamma( pixel_color[1] ) * max_color;
+            scaled_color[2] = gamma( pixel_color[2] ) * max_color;
+
+            /* enforce caps, replace with real gamma */
+            for( int i=0; i<3; i++)
+                scaled_color[i] = max( min(scaled_color[i], 255), 0);
+
+            /* write this pixel out to disk. ppm is forgiving about whitespace,
+             * but has a maximum of 70 chars/line, so use one line per pixel
+             */
+	    color[px][py][0] = scaled_color[0];
+	    color[px][py][1] = scaled_color[1];
+	    color[px][py][2] = scaled_color[2];
+	}
+    }
+    return NULL;
+}
+
+int
+main( int argc, char **argv )
+{
+    nthreads = argc == 2 ? atoi( argv[1] ) : 0;
+
+    if( nthreads < 1 )
+    {
+      fprintf( stderr, "%s: usage: %s NTHREADS\n", argv[0], argv[0] );
+      return 1;
+    }
+
+    scene = create_sphereflake_scene( sphereflake_recursion );
+
+    /* Write the image format header */
+    /* P3 is an ASCII-formatted, color, PPM file */
+    printf( "P3\n%d %d\n%d\n", width, height, max_color );
+    printf( "# Rendering scene with %d spheres and %d lights\n",
+            scene.sphere_count,
+            scene.light_count );
+
+    pthread_t threadID[nthreads];
+    int threadArgs[nthreads];
+    
+    /* Create threads */
+    for (long t = 0; t < nthreads; t++) {
+      threadArgs[t] = t;
+      if (pthread_create(&threadID[t], NULL, ThreadFunction, &threadArgs[t])) {
+	fprintf(stderr, "Creation error\n");
+	exit(1);
+      }
+    }
+
+    /* Join threads */
+    for (long t = 0; t < nthreads; t++) {
+      void* retVal;
+      if (pthread_join(threadID[t], &retVal)) {
+	fprintf(stderr, "Joining error\n");
+	exit(1);
+      }
+    }
+
+    /* Print */
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+	printf( "%.0f %.0f %.0f\n",
+		color[i][j][0], color[i][j][1], color[i][j][2] );
+      }
+      printf( "\n" );
+    }
+    
+    free_scene( &scene );
+
+    if( ferror( stdout ) || fclose( stdout ) != 0 )
+    {
+        fprintf( stderr, "Output error\n" );
+        return 1;
+    }
+
+    return 0;
+}
+
+Assignment 7
+hw.txt
+------------------------------------------------------------------------------
+1. 
+(1) Suppose the other teams really had been observing all the bytes going 
+across the network. Is your resulting network still secure?
+I believe the network is still secure, because the file is encrypted by 
+the sender's public key and has to be decrpted by the sender's private key,
+or vice versa. If the observer only knows the bytes go across the network,
+he will not be able to decrypt the encrypted message without the sender's
+key. 
+
+(2) you assumed the other teams had also tapped your keyboards and had 
+observed all of your team's keystrokes
+I think the resulting network is still secure since we disable password
+authentication. The verfication is done by assymetric encryption, in which 
+a message is encrypted by my public key and will only be decrypted by my 
+private key. The message is encrypted by symmetric encryption, or a session 
+key. Without password authentication, I do not need
+to type my passphrase to get access to the message. Therefore, the observer
+would not know my passphrase. The session key is not typed in by my team but 
+generated by the processor and will change frequently, so the observer would 
+not be able to find out the session key to decrypt the message. 
+
+(3) you are booting off USB and you assume the other teams temporarily had 
+physical control of the USB
+If the other team had physical control of the beaglebone, I don't think the 
+network will still be secure. They could use the board to log in as a root 
+user and get access to the remote host server without entering the password 
+since we disabled password authentication. 
+
+2. Explain why the gpg --verify command in the following instructions doesn't 
+really verify that you personally created the file in question. How would 
+you go about fixing this problem?
+We can be sure
+that the digital signature was sent by the sender because only the sender's public
+key can decrypt the digital signature. gpg --verify only verifies if I 
+personally created the signature of the file, but not created the file itself. 
+If someone else created eeprom, but I signed it with my key, the receiver 
+would not know I am not the creator. One way to fix the problem is to attach the 
+creator's public key with the file, so the receiver can verify signature using
+only the creator's public key.
+
+
+Assignment 8
+#include "randcpuid.h"
+#include <stdio.h>
+#include <dlfcn.h>
+#include <stdbool.h>
+#include <errno.h>
+#include <stdlib.h>
+static bool
+writebytes (unsigned long long x, int nbytes)
+{
+  int ndigits = nbytes * 2;
+  do
+    {
+      if (putchar ("0123456789abcdef"[x & 0xf]) < 0)
+  return false;
+      x >>= 4;
+      ndigits--;
+    }
+  while (0 < ndigits);
+
+  return 0 <= putchar ('\n');
+}
+
+/* Main program, which outputs N bytes of random data.  */
+int
+main (int argc, char **argv)
+{
+  /* Check arguments.  */
+  bool valid = false;
+  long long nbytes;
+  if (argc == 2)
+    {
+      char *endptr;
+      errno = 0;
+      nbytes = strtoll (argv[1], &endptr, 10);
+      if (errno)
+  perror (argv[1]);
+      else
+  valid = !*endptr && 0 <= nbytes;
+    }
+  if (!valid)
+    {
+      fprintf (stderr, "%s: usage: %s NBYTES\n", argv[0], argv[0]);
+      return 1;
+    }
+
+  /* If there's no work to do, don't worry about which library to use.  */
+  if (nbytes == 0)
+    return 0;
+
+  /* Dynamic loading */
+  void* dl_handle;
+  unsigned long long (*rand64) (void);
+  char* error;
+  if (rdrand_supported()) {
+    dl_handle = dlopen("randlibhw.so", RTLD_NOW);
+    if (!dl_handle){
+      printf("dlopen() error - %s\n", dlerror());
+      return 1;
+    }
+
+    rand64 = dlsym(dl_handle, "hardware_rand64");
+    error = dlerror();
+    if (error != NULL) {
+      printf("dlsym rand64 error - %s\n", error);
+      return 1;
+    }
+  }
+  
+  else {
+    dl_handle = dlopen("randlibsw.so", RTLD_NOW);
+    if (!dl_handle) {
+       printf("dlopen() error - %s\n", dlerror());
+       return 1;
+    }
+    rand64 = dlsym(dl_handle, "software_rand64");
+    error = dlerror();
+    if (error != NULL) {
+      printf("dlsym rand64 error - %s\n", error);
+      return 1;
+    }
+  }
+
+  
+  int wordsize = sizeof rand64 ();
+  int output_errno = 0;
+
+  do
+    {
+      unsigned long long x = rand64 ();
+      int outbytes = nbytes < wordsize ? nbytes : wordsize;
+      if (!writebytes (x, outbytes))
+  {
+    output_errno = errno;
+    break;
+  }
+      nbytes -= outbytes;
+    }
+  while (0 < nbytes);
+
+  if (fclose (stdout) != 0)
+    output_errno = errno;
+
+  if (output_errno)
+    {
+      errno = output_errno;
+      perror ("output");
+      return 1;
+    }
+
+  dlclose(dl_handle);
+  return 0;
+}
+
+
+
+lab.txt
+ldd errors:
+The errors might happen due to the following reasons:
+(1) The program is a shell script and does not depend on any shared libraries.
+(2) ldd does not work on a.out shared libraries.
+(3) ldd  does  not  work  with  some extremely old a.out programs which were built
+before ldd support was added to the compiler releases. 
+
+
+Assignment 9
+lab9.txt
+1. Get a copy of the Diffutils repository from the file ~eggert/src/gnu/diffutils:
+$ git clone ~eggert/src/gnu/diffutils
+
+2. Get git log and tags:
+$ cd diffutils
+$ git log > ~/git-log.txt
+$ git tag > ~/git-tags.txt
+
+Find the commit entitled “maint: quote 'like this' or "like this", not 
+`like this'”, and generate a patch for that commit, putting it into the 
+file quote-patch.txt.
+$ emacs ~/git-log.txt
+C-s maint: quote 'like this'
+<copy the ID> 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+$ git format-patch -1 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f --stdout >
+ quote-patch.txt
+
+3. Check out version 3.0 of Diffutils from your repository.
+Use the patch command to apply quote-patch.txt to version 3.0. In some 
+cases it will not be able to figure out what file to patch; skip past 
+those by typing RETURN. Record any problems you had in applying the patch.
+Use the git status command to get an overview of what happened.
+$ git checkout v3.0
+HEAD is now at 022cd5c... version 3.0
+$ patch -p1 quote-patch.txt
+skipped all patches with problems three times
+
+$ git status
+HEAD detached at v3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   NEWS
+  modified:   README
+  modified:   TODO
+  modified:   doc/diagmeet.note
+  modified:   ms/config.bat
+  modified:   ms/config.site
+  modified:   po/en.po
+  modified:   src/analyze.c
+  modified:   src/cmp.c
+  modified:   src/context.c
+  modified:   src/diff.c
+  modified:   src/diff.h
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/ifdef.c
+  modified:   src/io.c
+  modified:   src/sdiff.c
+  modified:   src/side.c
+  modified:   src/system.h
+  modified:   src/util.c
+  modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  NEWS.orig
+  README-hacking.orig
+  README-hacking.rej
+  README.orig
+  README.rej
+  cfg.mk.orig
+  cfg.mk.rej
+  ms/config.site.orig
+  quote-patch.txt
+  src/cmp.c.orig
+  src/context.c.orig
+  src/diff.c.orig
+  src/diff.c.rej
+  src/diff.h.orig
+  src/diff3.c.orig
+  src/diff3.c.rej
+  src/dir.c.orig
+  src/sdiff.c.orig
+  src/system.h.orig
+  src/util.c.orig
+  tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+...
+
+7. Remove all untracked files
+$ git clean -f
+
+...
+
+$ git diff > quote-3.0-patch.txt
+The file contains 327 lines.
+
+9. Build the resulting modified version of Diffutils, using the commands described in the file README-hacking
+./bootstrap
+./configure
+make
+make check
+
+10. Verify that Diffutils does the right thing with the “diff . -” scenario, as well as with “diff --help”.
+$ diff . -
+./src/diff: cannot compare '-' to a directory
+$ diff --help
+  All the apostrophes are correct.
+
+11. Do a sanity test using the modified version of Diffutils that you just built
+$ mkdir diffutils-3.0
+$ mkdir diffutils-3.0-patch
+$ mkdir diffutils-old
+$ git clone ~eggert/src/gnu/diffutils diffutils-old
+$ cd diffutils-old
+$ git checkout v3.0
+$ cd
+$ cp diffutils-old/src/*.c diffutils-3.0
+$ cp diffutils/src/*.c diffutils-3.0-patch
+$ diffutils/src/diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt
+
+12. Use diff to compare the contents of quote-3.0-test.txt and quote-3.0-patch.txt. Are the files identical? If not, are the differences innocuous?
+$ diff -u quote-3.0-test.txt diffutils/quote-3.0-patch.txt
+  The differences are mainly file paths, the positions of diff3.c are different in two patches. The actual contents are not different, therefore the differences are innocuous.
+
+
+hw9.txt
+1. Check out version 3.0 of Diffutils from your repository, into a new branch named “quote”.
+$ git clone ~eggert/src/gnu/diffutils diffutilshw
+$ cd diffutilshw
+$ git checkout v3.0 -b 'quote'
+Switched to a new branch 'quote'
+
+2. Install your change into this new branch, by running the patch command with your patch quote-3.0-patch.txt as input.
+$ patch -p1 <~/diffutils/quote-3.0-patch.txt
+
+3. Learn how to use the Emacs function add-change-log-entry-other-window (C-x 4 a).
+Use this Emacs function to compose an appropriate ChangeLog entry for your patch, by adapting the change log from the original patch.
+I open the six files and write the change log for each one using (C-x 4 a), and move ChangeLog from diffutils/src to diffutils
+4. Commit your changes to the new branch, using the ChangeLog entry as the commit message.
+$ git add .
+$ git commit -F ChangeLog
+
+5. Use the command “git format-patch” to generate a file formatted-patch.txt. This patch should work without having to fix things by hand afterwards.
+$ git format-patch -1 --stdout > formatted-patch.txt
+
+6. Your teaching assistant will assign you a partner, who will also generate a patch. Verify that your partner's patch works, by checking out version 3.0 again into a new temporary branch partner, applying the patch with the command “git am”, and building the resulting system, checking that it works with “make check”.
+$ git checkout v3.0 -b 'partner'
+$ git am < ~/partner-patch.txt
+$ git log
+  My partner's log entry shows up in the log.
+$ ./bootstrap
+$ ./configure
+$ make
+$ make check
+$ src/diff - .
+src/diff: cannot compare '-' to a directory
+
+
+
+
+
+
+
+
+
+
